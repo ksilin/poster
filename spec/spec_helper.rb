@@ -42,8 +42,6 @@ def create_temp_files(dir, filenames)
 
   filenames.each { |name|
     file_name = File.join(dir, name.to_s)
-    p "filename: #{file_name}"
-
     FileUtils.mkdir_p(File.dirname(file_name))
     open(file_name, 'w')
   }
