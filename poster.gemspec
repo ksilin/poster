@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.version       = Poster::VERSION
   spec.authors       = ["ksilin"]
   spec.email         = ["konstantin.silin@gmail.com"]
-  spec.description   = %q{TODO: Write a gem description}
+  spec.description   = %q{Traverses the working dir for .md and .markdown files and makes them into octopress posts.}
   spec.summary       = %q{Make my notes to octoposts}
   spec.homepage      = ""
   spec.license       = "MIT"
@@ -20,4 +20,5 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake"
+  spec.add_development_dependency "rspec"
 end
