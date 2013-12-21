@@ -25,7 +25,7 @@ module Poster
         }
       end
 
-      it 'should not find dotfiles called .md .markdown' do
+      it 'should not find dotfiles called .md or .markdown' do
         with_temp_dir(dotfiles) { |dir|
           expect(Finder.find(dir)).to be_empty
         }

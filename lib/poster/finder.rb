@@ -4,12 +4,11 @@ require 'find'
 module Poster
   class Finder
 
-    EXTENSIONS = [/^([0-9a-zA-Z_\-\/\.])+([0-9a-zA-Z_]).md$/, /^([0-9a-zA-Z_\-\/\.])+([0-9a-zA-Z_]).markdown$/]
+    # ends in .md or .markdown
+    EXTENSIONS = /^([0-9a-zA-Z_\-\/\.])+([0-9a-zA-Z_])\.m(d|arkdown)$/
 
     def self.find(dir = FileUtils.getwd)
-      Find.find(dir).select { |f|
-        EXTENSIONS.any? { |ext| ext =~ f }
-      }
+      Find.find(dir).select { |f|  EXTENSIONS  =~ f }
     end
   end
 
