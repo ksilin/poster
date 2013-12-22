@@ -1,6 +1,8 @@
 module Poster
   class Splitter
 
+    # TODO - have to dynamically determine the top header level
+    # the default top header level is h3 /'###'
     THREE_HASHES = /(?<!#)###(?!#)/
     THREE_HASHES_2 = /(?<!#)###[^#]/
 
@@ -17,8 +19,8 @@ module Poster
       content.split(THREE_HASHES).reject{|post| post.nil? || post.empty?}
     end
 
-    def self.header(post)
-      post.split("\n")[0]
+    def self.title(post)
+      post.split("\n")[0].strip
     end
   end
 end

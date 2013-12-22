@@ -13,9 +13,13 @@ module Poster
     #files =  [*filename] ||
     p "found #{files.size} files to convert"
     files.map{|f|
-
+      p "posting #{f}"
+      # TODO - this check comes too late, all files must have Date-parseable names
+      date = Date.parse(f) rescue next
       posts = Splitter.split(File.open(f).read)
-      p posts
+      posts.each{|post|
+        Planter.create(Splitter.title(post), post, date)
+      }
     }
   end
 end

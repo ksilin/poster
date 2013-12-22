@@ -36,12 +36,15 @@ module Poster
 
         file = File.open(File.dirname(__FILE__) + '/assets/example_2013.12.21.md', 'r')
         split = Splitter.split(file.read)
-        headers = split.map { |post| Splitter.header(post)}
+        headers = split.map { |post| Splitter.title(post)}
         p "headers: #{headers}"
       end
 
       it 'should extract dates' do
-        p Date.parse('/assets/example_2013.12.21.md')
+        date = Date.parse('/assets/example_2013.12.21.md')
+        p date
+        p "y: #{date.year}, m: #{date.month}, d: #{date.day}"
+
       end
 
       it 'should fail on ambiguous dates' do

@@ -5,7 +5,7 @@ module Poster
   describe Poster do
 
     it 'should do the thing' do
-          Poster.convert
+      Poster.convert
     end
   end
 end
