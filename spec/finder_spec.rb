@@ -5,11 +5,13 @@ require 'find'
 module Poster
   describe Finder do
 
-    describe 'Finding markdown files' do
+    let(:files) { ['foo.md', 'bar.markdown'] }
+    let(:not_as_extension) { ['foo.md.exe', 'bar.markdown.pdf'] }
+    let(:dotfiles) { ['.md', '.markdown'] }
 
-      let(:files){['foo.md', 'bar.markdown']}
-      let(:not_as_extension){['foo.md.exe', 'bar.markdown.pdf']}
-      let(:dotfiles){['.md', '.markdown']}
+    let(:nested) { ['foo_dir/foo.md', 'bar_dir/even_deeper/bar.markdown'] }
+
+    describe 'identifying markdown files' do
 
       it 'should find all .md and .markdown files' do
         with_tempdir(files) { |dir|
@@ -30,16 +32,27 @@ module Poster
           expect(Finder.find(dir)).to be_empty
         }
       end
-
-      it 'should work with recursive nested dirs' do
-        filenames = [[1, 2, 3],[4, 5, 6]]
-        with_tempdirs(filenames, []) do |dirs|
-          p dirs.size
-          p dirs
-        end
-      end
-
     end
+
+    describe 'recursive search' do
+
+      it 'should find files in nested dirs ' do
+        with_tempdir(nested) { |dir|
+          found = Finder.find(dir, true)
+          expect(found).to have(2).items
+        }
+      end
+    end
+
+    describe 'non-recursive search' do
+
+      it 'should ignore files in nested dirs ' do
+        with_tempdir(nested) { |dir|
+          expect(Finder.find(dir)).to be_empty
+        }
+      end
+    end
+
   end
 end
 
