@@ -13,7 +13,6 @@ module Poster
     # turns out, we dont need that crap, since Date will do it for us
     DATE = /(\d){4}\D(\d){1,2}\D(\d){1,2}/
 
-    # TODO we could also get an enumerator and go line for line
     def self.split(content)
       content.split(THREE_HASHES).reject{|post| post.nil? || post.empty?}
     end
