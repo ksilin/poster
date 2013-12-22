@@ -17,27 +17,22 @@ RSpec.configure do |config|
   config.order = 'random'
 end
 
-def with_temp_dir(filenames = [])
-  Dir.mktmpdir() { |dir|
+def with_tempdir(filenames = [])
+  Dir.mktmpdir { |dir|
     create_temp_files(dir, filenames)
-
     yield dir
   }
 end
 
-# TODO- fill the files with repeated digests of their names
+# TODO - how to pass an array of arrays withe filenames and let the method create the temp dirs depending on the size of the array
 def with_two_temp_dirs(filenames1 = [], filenames2 = [])
-  Dir.mktmpdir() { |dir1|
-    create_temp_files(dir1, filenames1)
 
-    Dir.mktmpdir() { |dir2|
-      create_temp_files(dir2, filenames2)
-
-      yield dir1, dir2
-    }
+  with_tempdir(filenames1){ |dir1|
+    with_tempdir(filenames2){ |dir2| yield dir1, dir2 }
   }
 end
 
+# TODO fill the files with repeated digests of their names
 def create_temp_files(dir, filenames)
 
   filenames.each { |name|
@@ -47,3 +42,14 @@ def create_temp_files(dir, filenames)
   }
 end
 
+# creating temp directories recursively
+def with_tempdirs(filenames = [[]], directories = [], &block)
+
+  if filenames.empty?
+    return block.call(directories)
+  end
+
+  with_tempdir(filenames.pop){ |dir|
+    with_tempdirs(filenames, directories << dir, &block)
+  }
+end
