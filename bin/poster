@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+require 'poster'
+
+# TODO add help
+# TODO add options: programming lang for code blocks, target blog, time constraints (with chronic)
+
+puts Poster.convert#(ARGV[0])
