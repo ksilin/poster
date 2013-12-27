@@ -1,5 +1,5 @@
 module Poster
-  class Splitter
+  class Parser
 
     # TODO - have to dynamically determine the top header level
     # the default top header level is h3 /'###'

@@ -1,6 +1,6 @@
 require 'poster/version'
 require 'poster/finder'
-require 'poster/splitter'
+require 'poster/parser'
 require 'poster/planter'
 
 module Poster
@@ -22,9 +22,9 @@ module Poster
         p "unable to parse #{f} for a date, falling back to #{date}"
       end
 
-      posts = Splitter.split(File.open(f).read)
+      posts = Parser.split(File.open(f).read)
       posts.each{|post|
-        Planter.create(Splitter.title(post), post, date)
+        Planter.create(Parser.title(post), post, date)
       }
     }
   end
