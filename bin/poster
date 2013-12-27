@@ -1,7 +1,45 @@
 #!/usr/bin/env ruby
 require 'poster'
+require 'optparse'
 
 # TODO add help
 # TODO add options: programming lang for code blocks, target blog, time constraints (with chronic)
 
-puts Poster.convert#(ARGV[0])
+puts "called with #{ARGV.inspect}"
+
+STDOUT.puts 'hi'
+
+options = {}
+opt_parser = OptionParser.new do |opts|
+
+  opts.on('-n', '--dry-run', 'Effects no changes, prints all steps') do
+    options[:dry_run] = true
+  end
+
+  opts.on('-f', '--files FILES', 'Which files to convert. Defaults to all files in the working directory and') do |files|
+    options[:files] = files
+  end
+
+  opts.on('-r', '--recursive', 'Also converts all files in all subdirectories of the working directory. False by default') do
+    options[:recursive] = true
+  end
+
+  opts.on('-t', '--target TARGET', 'Specify the TARGET blog for extracted posts') do |target|
+    unless target =~ /^[_\-[:alnum:]]+$/
+      raise ArgumentError, 'target must be in alphanumeric with _ or/and -'
+    end
+    options[:target] = target
+  end
+
+  opts.on_tail('-h', '--help', 'Show this message') do
+    puts opts
+  end
+options
+end
+
+opt_parser.parse!
+
+p options
+#p opt_parser
+
+puts Poster.convert(options)

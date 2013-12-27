@@ -2,7 +2,7 @@
 # TODO extract inline config (taken from octopress rakefile)
 class Planter
 
-  # TODO - this config must go
+  # TODO - this config must go out
   def self.octodir(blogname = 'octo')
     "#{Dir.home}/Code/Ruby/workspaces/octostuff/#{blogname}"
   end
@@ -33,7 +33,7 @@ class Planter
     end
   end
 
-  # staying real fopr the beginning
+  # staying real for the beginning
   def self.post_date
     Time.now.strftime('%Y-%m-%d %H:%M:%S %z')
   end
