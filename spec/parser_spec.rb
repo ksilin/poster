@@ -30,15 +30,22 @@ module Poster
         content = file.read
         p "content: #{content}"
       end
+    end
 
-      it 'should extract headers' do
+    describe 'title extraction' do
+
+      it 'should extract titles' do
 
         file = File.open(File.dirname(__FILE__) + '/assets/example_2013.12.21.md', 'r')
         split = Parser.split(file.read)
-        headers = split.map { |post| Parser.title(post) }
-        p "headers: #{headers}"
+        titles = split.map { |post| Parser.title(post) }
+        p "titles: #{titles}"
       end
+
+      it 'should provide default titles if title extraction fails'
+
     end
+
 
     describe 'date parsing' do
 

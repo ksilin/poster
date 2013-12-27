@@ -13,7 +13,7 @@ module Poster
 
     p "Would normally work on these files, but ignoring explicit file lists for now: #{options[:files]}"
 
-    files = Finder.find(options[:recursive])
+    files = Finder.find(Dir.getwd, options[:recursive])
 
     p "found #{files.size} files to convert"
     files.map{|f|

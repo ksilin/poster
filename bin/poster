@@ -11,6 +11,7 @@ STDOUT.puts 'hi'
 
 options = {}
 opt_parser = OptionParser.new do |opts|
+  default_options = {:recursive => false, :dry_run => false }
 
   opts.on('-n', '--dry-run', 'Effects no changes, prints all steps') do
     options[:dry_run] = true
