@@ -6,6 +6,7 @@ class Planter
   def self.octodir(blogname = 'octo')
     "#{Dir.home}/Code/Ruby/workspaces/octostuff/#{blogname}"
   end
+
   # source file directory
   def self.source_dir
     'source'
@@ -38,12 +39,18 @@ class Planter
     Time.now.strftime('%Y-%m-%d %H:%M:%S %z')
   end
 
-  def self.full_path(filename, date)
-    File.join(octodir, source_dir, posts_dir, full_filename(filename, date))
+  def self.full_path(title, date)
+    File.join(octodir, source_dir, posts_dir, full_filename(title, date))
   end
 
-  def self.full_filename(filename, date)
-    "#{date.year}-#{date.month}-#{date.day}-#{filename}.markdown"
+  def self.full_filename(title, date)
+    "#{date.year}-#{date.month}-#{date.day}-#{to_slug(title)}.markdown"
+  end
+
+  def self.to_slug(title)
+    # replace spaces with '-'
+    # remove non-word characters
+    title.split.join('-').gsub(/[^\w-]+/, '')
   end
 
 end
