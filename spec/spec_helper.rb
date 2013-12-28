@@ -26,10 +26,16 @@ def with_tempdir(filenames = [])
   }
 end
 
+def with_tempdir_and_files(filenames = [])
+  Dir.mktmpdir { |dir|
+    files = make_tempfiles(dir, filenames)
+    yield(dir, files)
+  }
+end
+
 # TODO fill the files with repeated digests of their names
 def make_tempfiles(dir, filenames)
-
-  filenames.each { |name|
+  filenames.map { |name|
     file_name = File.join(dir, name.to_s)
     FileUtils.mkdir_p(File.dirname(file_name))
     open(file_name, 'w')
@@ -37,6 +43,7 @@ def make_tempfiles(dir, filenames)
 end
 
 # creating temp directories recursively
+# directories argument is used for recursion and is not supposed to be used by the client/user
 def with_tempdirs(filenames = [], directories = [], &block)
 
   if filenames.empty?
@@ -45,5 +52,19 @@ def with_tempdirs(filenames = [], directories = [], &block)
 
   with_tempdir(filenames.pop){ |dir|
     with_tempdirs(filenames, directories << dir, &block)
+  }
+end
+
+# TODO: test this
+# creating temp directories recursively
+# directories argument is used for recursion and is not supposed to be used by the client/user
+def with_tempdirs_and_files(filenames = [], directories = [], files = [] &block)
+
+  if filenames.empty?
+    return block.call(directories, files)
+  end
+
+  with_tempdir_and_files(filenames.pop){ |dir, f|
+    with_tempdirs_and_files(filenames, directories << dir, files.concat(f), &block)
   }
 end
