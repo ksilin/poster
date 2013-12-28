@@ -11,25 +11,37 @@ module Poster
 
   def self.convert(options = {})
 
-    p "Would normally work on these files, but ignoring explicit file lists for now: #{options[:files]}"
+    if (options[:files])
+      p "Would normally work on these files, but ignoring explicit file lists for now: #{options[:files]}"
+    end
 
-    files = Finder.find(Dir.getwd, options[:recursive])
+    wd = options[:path] || Dir.getwd
+    p "working in : #{wd}"
 
-    p "found #{files.size} files to convert"
-    files.map{|f|
-      p "preparing #{f} for posting"
-      date = Time.now
-      begin
-        # TODO - this check comes too late, all files must have Date-parseable names
-      date = Date.parse(f)
-      rescue => e
-        p "unable to parse #{f} for a date, falling back to #{date}"
-      end
+    files = Finder.find(wd, options[:recursive])
+
+    p "found #{files.size} files to convert:"
+    files.each{ |f| p f}
+
+    files.map { |f|
 
       posts = Parser.split(File.open(f).read)
-      posts.each{|post|
-        Planter.create(Parser.title(post), post, date)
+      posts.each { |post|
+        title = Parser.title(post)
+        p "creating post titled #{title}"
+        Planter.create(title, post, post_date(f))
       }
     }
+  end
+
+  def self.post_date(f)
+    date = Time.now
+    begin
+      # TODO - this check comes too late, all files must have Date-parseable names
+      date = Date.parse(f)
+    rescue => e
+      p "unable to parse #{f} for a date, falling back to #{date}"
+    end
+    date
   end
 end
