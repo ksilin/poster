@@ -48,7 +48,6 @@ module Poster
 
     end
 
-
     describe 'date parsing' do
 
       it 'should extract dates' do
@@ -64,7 +63,7 @@ module Poster
 
     # the tags are written on the last non-space line of the post. Format: [tag1, tag2], whitespace optional
     # TODO perhaps arbitrary non-word delimiters?
-    describe 'extract tags' do
+    describe 'tag extraction' do
 
       it 'should not extract tags from untagged posts'
       it 'should all and only tags, independent of their content (or should I restrict to alphanumeric?)'
