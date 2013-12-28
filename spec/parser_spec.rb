@@ -44,6 +44,8 @@ module Poster
 
       it 'should provide default titles if title extraction fails'
 
+      it 'should support configurable title format'
+
     end
 
 

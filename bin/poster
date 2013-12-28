@@ -17,11 +17,15 @@ opt_parser = OptionParser.new do |opts|
     options[:dry_run] = true
   end
 
-  opts.on('-f', '--files FILES', 'Which files to convert. Defaults to all files in the working directory and') do |files|
+  opts.on('-f', '--files FILES', 'Which files to convert. Defaults to all files in the working directory.') do |files|
     options[:files] = files
   end
 
-  opts.on('-r', '--recursive', 'Also converts all files in all subdirectories of the working directory. False by default') do
+  opts.on('-p', '--path PATH', 'The path to the folder containing the files to convert. Defaults to the working directory.') do |path|
+    options[:path] = path
+  end
+
+  opts.on('-r', '--recursive', 'Also converts all files in all subdirectories of the working directory. False by default.') do
     options[:recursive] = true
   end
 
