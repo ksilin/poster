@@ -1,6 +1,8 @@
 module Poster
   class Parser
 
+    TITLE_NOT_FOUND = 'Poster warning: no title found'
+
     # TODO - have to dynamically determine the top header level
     # the default top header level is h3 /'###'
     THREE_HASHES = /(?<!#)###(?!#)/
@@ -19,7 +21,9 @@ module Poster
       content.split(THREE_HASHES).reject{|post| post.nil? || post.empty?}
     end
 
+
     def self.title(post)
+      return TITLE_NOT_FOUND if post.nil? || post.empty?
       post.split("\n")[0].strip
     end
   end

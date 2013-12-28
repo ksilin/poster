@@ -7,28 +7,32 @@ module Poster
 
     describe 'Split notes' do
 
-      it 'should read the file' do
-
-        lines= File.open(File.dirname(__FILE__) + '/assets/example_2013.12.21.md', 'r')
-        #lines.map { |l|
-        #  p "line: #{lines.lineno} : #{l.to_s}" }
-
-      end
-
       it 'should split note into several posts' do
 
         file = File.open(File.dirname(__FILE__) + '/assets/example_2013.12.21.md', 'r')
         split = Parser.split(file.read)
+        expect(split).to have(2).items
         split.each_with_index { |s, i|
           p "#{i}: #{s}"
         }
       end
 
-      it 'should split' do
+      it 'should return an empty Array when the source file is empty' do
 
-        file = File.open(File.dirname(__FILE__) + '/assets/example_2013.12.21.md', 'r')
-        content = file.read
-        p "content: #{content}"
+        with_tempdir([:foo]){|dir|
+          filename = Dir.glob(File.join(dir, '*'))[0]
+          file = File.open(filename, 'r')
+          split = Parser.split(file.read)
+          expect(split).to match_array []
+        }
+      end
+
+      it 'should return an empty Array when file empty' do
+
+        with_tempdir_and_files([:foo]){|dir, files|
+          split = Parser.split(File.open(files[0]).read)
+          expect(split).to match_array []
+        }
       end
     end
 
@@ -39,10 +43,12 @@ module Poster
         file = File.open(File.dirname(__FILE__) + '/assets/example_2013.12.21.md', 'r')
         split = Parser.split(file.read)
         titles = split.map { |post| Parser.title(post) }
-        p "titles: #{titles}"
+        expect(titles).to match_array ['The first post', 'The second post']
       end
 
-      it 'should provide default titles if title extraction fails'
+      it 'should provide default title if title extraction fails'do
+        expect(Parser.title('')).to be_equal Parser::TITLE_NOT_FOUND
+      end
 
       it 'should support configurable title format'
 
@@ -65,7 +71,9 @@ module Poster
     # TODO perhaps arbitrary non-word delimiters?
     describe 'tag extraction' do
 
-      it 'should not extract tags from untagged posts'
+      it 'should not extract tags from untagged posts' do
+
+      end
       it 'should all and only tags, independent of their content (or should I restrict to alphanumeric?)'
       it 'should extract tags surrounded by whitespace and blank lines'
 
