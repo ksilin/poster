@@ -34,6 +34,14 @@ module Poster
           expect(split).to match_array []
         }
       end
+
+      it 'should return an empty Array when title delimiter not found' do
+
+        with_tempdir_and_files([:foo]){|dir, files|
+          split = Parser.split(File.open(files[0]).read)
+          expect(split).to match_array []
+        }
+      end
     end
 
     describe 'title extraction' do

@@ -19,32 +19,35 @@ RSpec.configure do |config|
   config.order = 'random'
 end
 
-def with_tempdir(filenames = [])
+def with_tempdir(filenames = {})
   Dir.mktmpdir { |dir|
     make_tempfiles(dir, filenames)
     yield dir
   }
 end
 
-def with_tempdir_and_files(filenames = [])
+def with_tempdir_and_files(filenames = {})
   Dir.mktmpdir { |dir|
     files = make_tempfiles(dir, filenames)
     yield(dir, files)
   }
 end
 
-# TODO fill the files with repeated digests of their names
+# TODO inject
 def make_tempfiles(dir, filenames)
-  filenames.map { |name|
+  fn = []
+  filenames.each { |name, content|
     file_name = File.join(dir, name.to_s)
     FileUtils.mkdir_p(File.dirname(file_name))
-    open(file_name, 'w')
+    p "writing #{content.inspect} to #{file_name}"
+    open(file_name, 'w').write content
+    fn << file_name
   }
 end
 
 # creating temp directories recursively
 # directories argument is used for recursion and is not supposed to be used by the client/user
-def with_tempdirs(filenames = [], directories = [], &block)
+def with_tempdirs(filenames = {}, directories = [], &block)
 
   if filenames.empty?
     return block.call(directories)
@@ -58,7 +61,7 @@ end
 # TODO: test this
 # creating temp directories recursively
 # directories argument is used for recursion and is not supposed to be used by the client/user
-def with_tempdirs_and_files(filenames = [], directories = [], files = [] &block)
+def with_tempdirs_and_files(filenames = {}, directories = [], files = [] &block)
 
   if filenames.empty?
     return block.call(directories, files)
@@ -67,4 +70,8 @@ def with_tempdirs_and_files(filenames = [], directories = [], files = [] &block)
   with_tempdir_and_files(filenames.pop){ |dir, f|
     with_tempdirs_and_files(filenames, directories << dir, files.concat(f), &block)
   }
+end
+
+def to_filelist(*names)
+  names.inject({}){|h, name| h[name] = nil; h}
 end

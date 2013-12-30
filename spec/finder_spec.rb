@@ -5,11 +5,16 @@ require 'find'
 module Poster
   describe Finder do
 
-    let(:files) { ['foo.md', 'bar.markdown'] }
-    let(:not_as_extension) { ['foo.md.exe', 'bar.markdown.pdf'] }
-    let(:dotfiles) { ['.md', '.markdown'] }
+    let(:files) { %w(foo.md bar.markdown)}
+    let(:not_as_extension) { %w(foo.md.exe bar.markdown.pdf) }
+    let(:dotfiles) { %w(.md .markdown) }
 
-    let(:nested) { ['foo_dir/foo.md', 'bar_dir/even_deeper/bar.markdown'] }
+    let(:nested) { %w(foo_dir/foo.md bar_dir/even_deeper/bar.markdown) }
+
+    let(:with_garbage) { list = to_filelist('foo.md')
+    list['foo.md'] = '123423644tzerztbertzber'
+    list
+    }
 
     describe 'identifying markdown files' do
 
@@ -54,5 +59,6 @@ module Poster
     end
 
   end
+
 end
 
