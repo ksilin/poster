@@ -33,17 +33,17 @@ def with_tempdir_and_files(filenames = {})
   }
 end
 
-# TODO inject
 def make_tempfiles(dir, filenames)
-  fn = []
-  filenames.each { |name, content|
+  filenames.reduce([]) { |fn, name, content|
+
     file_name = File.join(dir, name.to_s)
+    # not simply usign the dir, since filenames may contain paths
     FileUtils.mkdir_p(File.dirname(file_name))
-    p "writing #{content.inspect} to #{file_name}"
-    open(file_name, 'w').write content
+
+    p "writing #{content} to #{file_name}"
+    open(file_name, 'w'){ |f| f.write content }
     fn << file_name
   }
-  fn
 end
 
 # creating temp directories recursively
