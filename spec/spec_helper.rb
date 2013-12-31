@@ -43,6 +43,7 @@ def make_tempfiles(dir, filenames)
     open(file_name, 'w').write content
     fn << file_name
   }
+  fn
 end
 
 # creating temp directories recursively

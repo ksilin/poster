@@ -8,6 +8,7 @@ module Poster
   describe Poster do
 
     it 'should do the thing' do
+
       Poster.convert
     end
   end
