@@ -14,11 +14,6 @@ puts "called with #{ARGV.inspect}"
 # TODO open external config
 # TODO create external config if not found
 
-options = get_command_line_options
-p "command-line options: #{options}"
-
-puts Poster.convert(options)
-
 def get_command_line_options
   options = {}
   opt_parser = OptionParser.new do |opts|
@@ -55,3 +50,9 @@ def get_command_line_options
   opt_parser.parse!
   return options
 end
+
+options = get_command_line_options
+p "command-line options: #{options}"
+
+puts Poster.convert(options)
+
