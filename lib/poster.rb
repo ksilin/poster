@@ -2,6 +2,7 @@ require 'poster/version'
 require 'poster/finder'
 require 'poster/parser'
 require 'poster/planter'
+require 'poster/post'
 
 module Poster
 
@@ -29,29 +30,13 @@ module Poster
     p "working in : #{wd}"
 
     files = Finder.find(wd, options[:recursive])
-
     p "found #{files.size} file(s) to convert:"
     files.each{ |f| p f}
 
-    files.map { |f|
-
-      posts = Parser.split(File.open(f).read)
-      posts.each { |post|
-        title = Parser.title(post)
-        p "creating post titled #{title}"
-        Planter.create(title, post, post_date(f))
-      }
+    files.each { |f|
+      posts = Parser.extract(f)
+      Planter.post(posts)
     }
   end
 
-  def self.post_date(f)
-    date = Time.now
-    begin
-      # TODO - this check comes too late, all files must have Date-parseable names
-      date = Date.parse(f)
-    rescue => e
-      p "unable to parse #{f} for a date, falling back to #{date}"
-    end
-    date
-  end
 end

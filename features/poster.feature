@@ -15,3 +15,4 @@ Feature: We can convert existing files to posts
     And I successfully run `ruby ../../bin/poster`
     Then the stdout should contain "found 1 file(s) to convert"
     And the stdout should contain "notes_2013.12.31.md"
+    And the output should match /no notes found in .*notes_2013.12.31.md/

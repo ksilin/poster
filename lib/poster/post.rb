@@ -5,7 +5,7 @@ module Poster
 
     attr_reader :title, :author, :content, :created_at, :posted_at
 
-    # TODO - how to post from different authors?
+    # TODO - to named key params
     def initialize(title = 'Title could not be found', author = ENV['USERNAME'], content = 'lorem ipsum', created_at = Time.now, posted_at = Time.now )
       @title = title
       @author = author

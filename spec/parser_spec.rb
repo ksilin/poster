@@ -5,21 +5,29 @@ require 'date'
 module Poster
   describe Parser do
 
+    describe 'strange case of matching operators' do
+      it 'should match title delimiters' do
+        p 'abc' =~ /b/    # => 1
+        p 'abc' !=~/b/    # => true
+        p !('abc' =~ /b/) # => false
+      end
+    end
+
     describe 'Split notes' do
 
       it 'should split note into several posts' do
 
-        file = File.open(File.dirname(__FILE__) + '/assets/example_2013.12.21.md', 'r')
+        file = File.open(Dir.pwd + '/spec/assets/example_2013.12.21.md', 'r')
         split = Parser.split(file.read)
-        expect(split).to have(2).items
         split.each_with_index { |s, i|
           p "#{i}: #{s}"
         }
+        expect(split).to have(2).items
       end
 
       it 'should return an empty Array when the source file is empty' do
 
-        with_tempdir([:foo]){|dir|
+        with_tempdir([:foo]) { |dir|
           filename = Dir.glob(File.join(dir, '*'))[0]
           file = File.open(filename, 'r')
           split = Parser.split(file.read)
@@ -29,7 +37,7 @@ module Poster
 
       it 'should return an empty Array when file empty' do
 
-        with_tempdir_and_files([:foo]){|dir, files|
+        with_tempdir_and_files([:foo]) { |dir, files|
           split = Parser.split(File.open(files[0]).read)
           expect(split).to match_array []
         }
@@ -37,7 +45,7 @@ module Poster
 
       it 'should return an empty Array when title delimiter not found' do
 
-        with_tempdir_and_files([:foo]){|dir, files|
+        with_tempdir_and_files([:foo]) { |dir, files|
           split = Parser.split(File.open(files[0]).read)
           expect(split).to match_array []
         }
@@ -54,7 +62,7 @@ module Poster
         expect(titles).to match_array ['The first post', 'The second post']
       end
 
-      it 'should provide default title if title extraction fails'do
+      it 'should provide default title if title extraction fails' do
         expect(Parser.title('')).to be_equal Parser::TITLE_NOT_FOUND
       end
 
@@ -86,5 +94,14 @@ module Poster
       it 'should extract tags surrounded by whitespace and blank lines'
 
     end
+
+    describe 'Post extraction' do
+      it 'should create two Post instances' do
+        filename = Dir.pwd + '/spec/assets/example_2013.12.21.md'
+        posts = Parser.extract(filename)
+        pp posts
+      end
+    end
+
   end
 end

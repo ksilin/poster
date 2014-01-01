@@ -17,40 +17,20 @@ class Planter
     '_posts'
   end
 
-  def self.create(title, content, date)
+  def self.post(posts)
 
-    full_path = full_path(title, date)
-    puts "Creating new post: #{full_path}"
-    open(full_path, 'w') do |post|
-      post.puts '---'
-      post.puts 'layout: post'
-      post.puts "title: \"#{title.gsub(/&/, '&amp;')}\""
-      post.puts "date: #{post_date}"
-      post.puts 'comments: true'
-      post.puts 'categories: '
-      post.puts '---'
-      post.puts
-      post.puts content
-    end
+    posts.each { |post|
+
+      full_path = full_path(post.filename)
+      puts "Creating new post: #{full_path}"
+      open(full_path, 'w') do |file|
+        file.puts post.header
+        file.puts post.content
+      end
+    }
   end
 
-  # staying real for the beginning
-  def self.post_date
-    Time.now.strftime('%Y-%m-%d %H:%M:%S %z')
+  def self.full_path(filename)
+    File.join(octodir, source_dir, posts_dir, filename)
   end
-
-  def self.full_path(title, date)
-    File.join(octodir, source_dir, posts_dir, full_filename(title, date))
-  end
-
-  def self.full_filename(title, date)
-    "#{date.year}-#{date.month}-#{date.day}-#{to_slug(title)}.markdown"
-  end
-
-  def self.to_slug(title)
-    # replace spaces with '-'
-    # remove non-word characters
-    title.split.join('-').gsub(/[^\w-]+/, '')
-  end
-
 end
