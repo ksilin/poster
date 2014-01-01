@@ -30,7 +30,7 @@ module Poster
 
     files = Finder.find(wd, options[:recursive])
 
-    p "found #{files.size} files to convert:"
+    p "found #{files.size} file(s) to convert:"
     files.each{ |f| p f}
 
     files.map { |f|
