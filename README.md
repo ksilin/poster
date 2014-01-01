@@ -1,4 +1,5 @@
 [![Code Climate](https://codeclimate.com/github/ksilin/poster.png)](https://codeclimate.com/github/ksilin/poster)
+[![Build Status](https://travis-ci.org/ksilin/poster.png)](https://travis-ci.org/ksilin/poster)
 
 # Poster
 
