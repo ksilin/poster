@@ -3,18 +3,19 @@
 class Planter
 
   # TODO - this config must go out
-  def self.octodir(blogname = 'octo')
-    "#{Dir.home}/Code/Ruby/workspaces/octostuff/#{blogname}"
+  def self.octodir(blogname = '')
+    #"#{Dir.home}/Code/Ruby/workspaces/octostuff/#{blogname}"
+    "#{Dir.pwd}/#{blogname}"
   end
 
   # source file directory
   def self.source_dir
-    'source'
+    ''#'source'
   end
 
   # directory for blog files
   def self.posts_dir
-    '_posts'
+    ''#'_posts'
   end
 
   def self.post(posts)
