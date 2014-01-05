@@ -3,11 +3,12 @@ require 'poster/finder'
 require 'poster/parser'
 require 'poster/planter'
 require 'poster/post'
+require 'poster/conf'
 
 module Poster
 
   DEFAULT_OPTIONS = {
-      :target_name => nil,
+      :blog => :test,
       :source_dir => Dir.pwd,
       :recursive => false,
       :overwrite => true,
@@ -35,7 +36,7 @@ module Poster
 
     files.each { |f|
       posts = Parser.extract(f)
-      Planter.post(posts)
+      Planter.post(posts, options[:blog])
     }
   end
 

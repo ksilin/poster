@@ -2,27 +2,11 @@
 # TODO extract inline config (taken from octopress rakefile)
 class Planter
 
-  # TODO - this config must go out
-  def self.octodir(blogname = '')
-    #"#{Dir.home}/Code/Ruby/workspaces/octostuff/#{blogname}"
-    "#{Dir.pwd}/#{blogname}"
-  end
+  def self.post(posts, blog)
 
-  # source file directory
-  def self.source_dir
-    ''#'source'
-  end
-
-  # directory for blog files
-  def self.posts_dir
-    ''#'_posts'
-  end
-
-  def self.post(posts)
-
-    posts.each { |post|
-
-      full_path = full_path(post.filename)
+    Array(posts).each { |post|
+      full_path = full_path(post.filename, blog)
+      # TODO - if the full path is not available, the processing
       puts "Creating new post: #{full_path}"
       open(full_path, 'w') do |file|
         file.puts post.header
@@ -31,7 +15,11 @@ class Planter
     }
   end
 
-  def self.full_path(filename)
-    File.join(octodir, source_dir, posts_dir, filename)
+  def self.full_path(filename, blog)
+    # TODO extract conf from here
+    conf = Conf.new
+    return filename unless  conf[:blogs][blog]
+
+    File.join(conf[:blogs][blog], conf[:source_dir], conf[:posts_dir], filename)
   end
 end

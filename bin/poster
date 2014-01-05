@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 require 'poster'
 require 'optparse'
+require 'yaml'
 
 # TODO add help
 # TODO add options: programming lang for code blocks, target blog, time constraints (with chronic)
@@ -11,6 +12,10 @@ require 'optparse'
 
 # TODO open external config
 # TODO create external config if not found
+
+config = Conf.new
+
+# TODO - merge config with cl params
 
 def get_command_line_options
   options = {}
