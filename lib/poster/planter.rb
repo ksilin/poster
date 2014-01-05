@@ -1,25 +1,32 @@
 # puts the posts where they belong
-# TODO extract inline config (taken from octopress rakefile)
 class Planter
 
+  # TODO - force, forbid or query overwriting
   def self.post(posts, blog)
 
     Array(posts).each { |post|
-      full_path = full_path(post.filename, blog)
-      # TODO - if the full path is not available, the processing
+
+      post_dir = post_dir(blog)
+      raise "target directory #{post_dir} not found" unless Dir.exist? post_dir
+
+      full_path = File.join(post_dir, post.filename)
+      # TODO - if the path dir does not exist, the processing should skip this file
       puts "Creating new post: #{full_path}"
-      open(full_path, 'w') do |file|
-        file.puts post.header
-        file.puts post.content
-      end
+      write_post_to_file(full_path, post)
     }
   end
 
-  def self.full_path(filename, blog)
-    # TODO extract conf from here
-    conf = Conf.new
-    return filename unless  conf[:blogs][blog]
+  def self.write_post_to_file(full_path, post)
+    open(full_path, 'w') do |file|
+      file.puts post.header
+      file.puts post.content
+    end
+  end
 
-    File.join(conf[:blogs][blog], conf[:source_dir], conf[:posts_dir], filename)
+  def self.post_dir(blog)
+    # TODO extract conf instantiation from here
+    conf = Conf.new
+    return Dir.pwd unless conf[:blogs][blog]
+    File.join(Dir.home, conf[:blogs][blog], conf[:source_dir], conf[:posts_dir])
   end
 end

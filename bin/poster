@@ -13,8 +13,6 @@ require 'yaml'
 # TODO open external config
 # TODO create external config if not found
 
-config = Conf.new
-
 # TODO - merge config with cl params
 
 def get_command_line_options
