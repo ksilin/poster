@@ -1,0 +1,11 @@
+---
+:source_dir: source
+:posts_dir: _posts
+
+:blogs:
+  :octo: Code/Ruby/workspaces/octostuff/octo
+  :ktruby: Code/Ruby/workspaces/octostuff/kt-ruby
+  :inner: Code/Ruby/workspaces/octostuff/inner
+  :test:
+
+:default_blog: :octo
