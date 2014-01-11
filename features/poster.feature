@@ -4,7 +4,7 @@ Feature: We can convert existing files to posts
 
 #   `pwd`, run in a step here returns <path_to_project>/tmp/aruba
 
-  Scenario: Converting a notes file
+  Scenario: Running in a directory without markdown files has no effect
     Given the file "notes_2013.12.31.md" doesn't exist
     And I successfully run `ruby ../../bin/poster`
     Then the stdout should contain "found 0 file(s) to convert"
