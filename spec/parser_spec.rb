@@ -7,14 +7,15 @@ module Poster
 
     describe 'strange case of matching operators' do
       it 'should match title delimiters' do
-        p 'abc' =~ /b/    # => 1
-        p 'abc' !=~/b/    # => true
+        p 'abc' =~ /b/ # => 1
+        p 'abc' !=~/b/ # => true
         p !('abc' =~ /b/) # => false
       end
     end
 
     describe 'Split notes' do
 
+      # TODO - excercise split with simple strings
       it 'should split note into several posts' do
 
         file = File.open(Dir.pwd + '/spec/assets/example_2013.12.21.md', 'r')
@@ -25,14 +26,9 @@ module Poster
         expect(split).to have(2).items
       end
 
-      it 'should return an empty Array when the source file is empty' do
-
-        with_tempdir([:foo]) { |dir|
-          filename = Dir.glob(File.join(dir, '*'))[0]
-          file = File.open(filename, 'r')
-          split = Parser.split(file.read)
-          expect(split).to match_array []
-        }
+      it 'should return an empty Array when the source string is empty' do
+        split = Parser.split('')
+        expect(split).to match_array []
       end
 
       it 'should return an empty Array when file empty' do
@@ -60,6 +56,38 @@ module Poster
         split = Parser.split(file.read)
         titles = split.map { |post| Parser.title(post) }
         expect(titles).to match_array ['The first post', 'The second post']
+      end
+
+      it 'should extract titles' do
+
+        split = Parser.split('### hello')
+        titles = split.map { |post| Parser.title(post) }
+        expect(titles).to match_array ['hello']
+      end
+
+      it 'should drop everything before the first title' do
+
+        split = Parser.split(" hello \n and ### goodbye")
+        titles = split.map { |post| Parser.title(post) }
+        expect(titles).to match_array ['goodbye']
+      end
+
+      # not sure what to do with fiels that do not have s single title in them
+      # probably the best thing would be to try different title delimiters and
+      # suggest the most probably candidates
+      #  what char is found 3 or 4 times most in a row that is followed by a blank line
+
+      it 'only three hashes are a title' do
+
+        split = Parser.split(" # a \n ## b \n #### c")
+        expect(split).to match_array []
+      end
+
+
+      it 'should drop everything before the first title' do
+
+        split = Parser.drop_before_first_title(" hello \n and ### goodbye")
+        expect(split).to match '### goodbye'
       end
 
       it 'should provide default title if title extraction fails' do

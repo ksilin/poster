@@ -1,12 +1,17 @@
 module Poster
   class Parser
 
-    TITLE_NOT_FOUND = 'Poster warning: no title found'
+    TITLE_NOT_FOUND = 'Parser warning: no title found'
 
     # TODO - have to dynamically determine the top header level
     # the default top header level is h3 /'###'
     THREE_HASHES = /(?<!#)###(?!#)/
     THREE_HASHES_2 = /(?<!#)###[^#]/
+
+    # m is for 'dot matches newlines' to match multiple lines
+    EVERYTHING_BEFORE_AND_INCLUDING_THE_FIRST_3_HASHES =/ .*?(?<!#)###(?!#)/im
+
+    TITLE_LINE_FOLLOWED_BY_A_BLANK_LINE = /(?<!#)###(?!#)[\w ]+\n\s+$/i
 
     # you can use any single non-digit delimiter char between the digit groups
     # examples use '_'
@@ -21,12 +26,20 @@ module Poster
 
       return [] if content.nil? || content.empty?
 
+
       if !(content =~ THREE_HASHES)
 
-        er = "Unable to split content: title delimiter not found\n"
-        return [er + content]
+        STDERR.puts "#{TITLE_NOT_FOUND} for : #{content}"
+        return []
       end
+      puts "found header at #{content =~ THREE_HASHES}"
+      # remove everything before the first title delimiter
+      content = drop_before_first_title(content)
       content.split(THREE_HASHES).reject { |post| post.nil? || post.empty? }
+    end
+
+    def self.drop_before_first_title(content)
+      content.slice(content.index(THREE_HASHES)..-1)
     end
 
 
