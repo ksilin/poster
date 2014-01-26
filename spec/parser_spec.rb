@@ -91,7 +91,7 @@ module Poster
       end
 
       it 'should provide default title if title extraction fails' do
-        expect(Parser.title('')).to be_equal Parser::TITLE_NOT_FOUND
+        expect(Parser.title('')).to eq Parser::TITLE_NOT_FOUND
       end
 
       it 'should support configurable title format'

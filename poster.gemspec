@@ -23,4 +23,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec"
   spec.add_development_dependency "aruba"
   spec.add_development_dependency "active_support"
+  spec.add_development_dependency 'coveralls'#, require: false
 end

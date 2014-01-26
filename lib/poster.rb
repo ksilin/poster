@@ -36,6 +36,7 @@ module Poster
 
     files.each { |f|
       posts = Parser.extract(f)
+      p "extracted #{posts.size} posts from #{f}"
       Planter.post(posts, options[:blog])
     }
   end

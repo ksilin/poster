@@ -39,6 +39,15 @@ module Poster
       end
     end
 
+    # do no process files that do not have a date
+    # TODO - make this optional
+    describe 'identifying files with parseable date in the filename' do
+
+
+
+    end
+
+
     describe 'recursive search' do
 
       it 'should find files in nested dirs ' do

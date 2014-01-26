@@ -11,6 +11,9 @@ module Poster
     # m is for 'dot matches newlines' to match multiple lines
     EVERYTHING_BEFORE_AND_INCLUDING_THE_FIRST_3_HASHES =/ .*?(?<!#)###(?!#)/im
 
+    # the multiplatform match for newline is rather '\r\n?|\n' than a simple '\n'
+    # but on unixes and mac \n should work fine
+    # TODO - test this
     TITLE_LINE_FOLLOWED_BY_A_BLANK_LINE = /(?<!#)###(?!#)[\w ]+\n\s+$/i
 
     # you can use any single non-digit delimiter char between the digit groups

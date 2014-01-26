@@ -16,8 +16,8 @@ module Poster
       }
     end
 
-    def self.do_not_recurse(dir, f, recursive)
-      !recursive && File.directory?(f) && f != dir
+    def self.do_not_recurse(dir, file, recursive)
+      !recursive && File.directory?(file) && file != dir
     end
   end
 
