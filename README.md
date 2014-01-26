@@ -1,6 +1,7 @@
 [![Code Climate](https://codeclimate.com/github/ksilin/poster.png)](https://codeclimate.com/github/ksilin/poster)
 [![Build Status](https://travis-ci.org/ksilin/poster.png)](https://travis-ci.org/ksilin/poster)
 [![GitHub version](https://badge.fury.io/gh/ksilin%2Fposter.png)](http://badge.fury.io/gh/ksilin%2Fposter)
+[![Coverage Status](https://coveralls.io/repos/ksilin/poster/badge.png?branch=master)](https://coveralls.io/r/ksilin/poster?branch=master)
 
 
 # Poster
