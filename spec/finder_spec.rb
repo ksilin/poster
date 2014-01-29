@@ -5,7 +5,7 @@ require 'find'
 module Poster
   describe Finder do
 
-    let(:files) { %w(foo.md bar.markdown)}
+    let(:files) { %w(foo.md bar.markdown) }
     let(:not_as_extension) { %w(foo.md.exe bar.markdown.pdf) }
     let(:dotfiles) { %w(.md .markdown) }
 
@@ -43,6 +43,27 @@ module Poster
     # TODO - make this optional
     describe 'identifying files with parseable date in the filename' do
 
+      it 'should ignore files without a parseable dates in the name' do
+        with_tempdir(['nodate.md']) { |dir|
+          expect(Finder.find(dir)).to eq []
+        }
+      end
+
+      it 'should find files with a parseable dates in the name' do
+        with_tempdir(['notes_2014.01.29.md']) { |dir|
+          expect(Finder.find(dir)).to eq []
+        }
+      end
+
+      it 'should not find dates where there are none' do
+          expect(Finder.date_parseable('nodate.md')).to be false
+      end
+
+      it 'should fail where Date.parse fails'
+
+      it 'should accept files with parseable dates in the name' do
+        expect(Finder.date_parseable('notes_2014.01.29.md')).to be_true
+      end
 
 
     end

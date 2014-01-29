@@ -12,8 +12,16 @@ module Poster
           p "pruning #{f.inspect}"
           Find.prune
         end
-        EXTENSIONS  =~ f
+        has_valid_extension(f) && date_parseable(File.basename(f))
       }
+    end
+
+    def self.has_valid_extension(f)
+      EXTENSIONS =~ f
+    end
+
+    def self.date_parseable(f)
+      Date.parse(f) rescue false
     end
 
     def self.do_not_recurse(dir, file, recursive)
