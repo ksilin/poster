@@ -24,7 +24,24 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+    $ poster
+
+Executed in a folder with notes named like something_2014.01.27.md
+it will convert the file into 0 or more files following the [Jekyll post format](http://jekyllbootstrap.com/lessons/jekyll-introduction.html): `@YEAR-MONTH-DATE-title.MARKUP@`.
+
+There may be multiple posts inside a file. Each post must start with `###` (the only supported delimiter ATM, but it's on my lsit :) and contain a title text on the same line.
+
+If the file does not contain a single `###`, no posts wil be extracted.
+
+the files must
+* have either `.md` or `.markdown` extensions
+* contain a date in the file name that is parseable by [`Date.parse`](http://ruby-doc.org/stdlib-2.1.0/libdoc/date/rdoc/Date.html#method-c-parse)
+
+TODO: make date position configurable - on the top of the file or inside the post title
+TODO: make title markup configurable
+TODO: add interactive mode for editing dates, tags and titles
+TOOD: make extensions configurable
+
 
 ## Contributing
 
