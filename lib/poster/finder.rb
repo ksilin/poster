@@ -4,7 +4,9 @@ module Poster
   class Finder
 
     # ends in .md or .markdown
-    EXTENSIONS = /^([0-9a-zA-Z_\-\/\.])+([0-9a-zA-Z_])\.m(d|arkdown)$/
+    BASENAME = /^([0-9a-zA-Z_\-\/\.])+([0-9a-zA-Z_])\.m(d|arkdown)$/
+    EXTENSIONS = /^\.m(d|arkdown)$/
+    DATES = /\d{4}_\d{2}_\d{2}/
 
     def self.find(dir = Dir.pwd, recursive = false)
       Find.find(dir).select { |f|
@@ -12,16 +14,23 @@ module Poster
           p "pruning #{f.inspect}"
           Find.prune
         end
-        has_valid_extension(f) && date_parseable(File.basename(f))
+        File.file?(f) && has_valid_extension(f) && date_parseable(f)
       }
     end
 
     def self.has_valid_extension(f)
-      EXTENSIONS =~ f
+      puts "matching #{File.extname(f)} with #{EXTENSIONS}"
+      EXTENSIONS =~ File.extname(f)
     end
 
     def self.date_parseable(f)
-      Date.parse(f) rescue false
+      basename = File.basename(f, File.extname(f))
+      # Date#parse seems no to accept underscores as date delimiters
+      replaced_undescores = basename.gsub('_', '-')
+      # This is far too lenient. I want dates to be digits only
+      # But then I would need to vary delimiters
+      # TODO - ask on SO how to make such date parsing with different delimiters
+      Date.parse(replaced_undescores) rescue false
     end
 
     def self.do_not_recurse(dir, file, recursive)

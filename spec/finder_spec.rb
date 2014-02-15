@@ -5,11 +5,11 @@ require 'find'
 module Poster
   describe Finder do
 
-    let(:files) { %w(foo.md bar.markdown) }
+    let(:files) { %w(foo_2014_02_15.md bar_2014_02_15.markdown) }
     let(:not_as_extension) { %w(foo.md.exe bar.markdown.pdf) }
     let(:dotfiles) { %w(.md .markdown) }
 
-    let(:nested) { %w(foo_dir/foo.md bar_dir/even_deeper/bar.markdown) }
+    let(:nested) { %w(foo_dir/foo_2014_02_15.md bar_dir/even_deeper/bar_2014_02_15.markdown) }
 
     let(:with_garbage) { list = to_filelist('foo.md')
     list['foo.md'] = '123423644tzerztbertzber'
@@ -51,7 +51,7 @@ module Poster
 
       it 'should find files with a parseable dates in the name' do
         with_tempdir(['notes_2014.01.29.md']) { |dir|
-          expect(Finder.find(dir)).to eq []
+          expect(Finder.find(dir)).to have(1).item
         }
       end
 
@@ -74,6 +74,7 @@ module Poster
       it 'should find files in nested dirs ' do
         with_tempdir(nested) { |dir|
           found = Finder.find(dir, true)
+          puts "found: #{found.join('\n')}"
           expect(found).to have(2).items
         }
       end
