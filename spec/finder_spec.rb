@@ -9,6 +9,7 @@ module Poster
     let(:other_extensions) { %w(foo_2014_02_15.mad bar_2014_02_15.murkdown) }
     let(:not_as_extension) { %w(foo_2014_02_15.md.exe bar_2014_02_15.markdown.pdf) }
     let(:dotfiles) { %w(.2014_02_15.md .2014_02_15.markdown) }
+    let(:no_dates) { %w(foo.md bar.markdown) }
 
     let(:nested) { %w(foo_dir/foo_2014_02_15.md bar_dir/even_deeper/bar_2014_02_15.markdown) }
 
@@ -40,23 +41,12 @@ module Poster
       end
     end
 
-    # do no process files that do not have a date
     # TODO - make this optional
-    describe 'identifying files with parseable date in the filename' do
-
-      it 'should ignore files without a parseable dates in the name' do
-        with_tempdir(['nodate.md']) do |dir|
-          expect(Finder.find(dir)).to eq []
-        end
-      end
-
-      it 'should find files with a parseable dates in the name' do
-        with_tempdir(['notes_2014.01.29.md']) do |dir|
-          expect(Finder.find(dir)).to have(1).item
-        end
+    it 'should ignore files without a parseable dates in the name' do
+      with_tempdir(no_dates) do |dir|
+        expect(Finder.find(dir)).to eq []
       end
     end
-
 
     describe 'recursive search' do
 

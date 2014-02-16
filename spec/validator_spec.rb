@@ -8,6 +8,7 @@ module Poster
     let(:other_extensions) { %w(foo_2014_02_15.mad bar_2014_02_15.murkdown) }
     let(:not_as_extension) { %w(foo_2014_02_15.md.exe bar_2014_02_15.markdown.pdf) }
     let(:dotfiles) { %w(.2014_02_15.md .2014_02_15.markdown) }
+    let(:no_dates) { %w(foo.md bar.markdown) }
 
     describe 'validating markdown file names' do
 
@@ -41,14 +42,19 @@ module Poster
     describe 'identifying files with parseable date in the filename' do
 
       it 'should not find dates where there are none' do
-        expect(Validator.date_parseable('nodate.md')).to be false
+        no_dates.each do |f|
+          expect(Validator.date_parseable(f)).to be false
+        end
+      end
+
+      it 'should not find dates where there are none' do
+        markdown_files.each do |f|
+          expect(Validator.date_parseable(f)).to be true
+        end
       end
 
       it 'should fail where Date.parse fails'
 
-      it 'should accept files with parseable dates in the name' do
-        expect(Validator.date_parseable('notes_2014.01.29.md')).to be true
-      end
     end
   end
 end
