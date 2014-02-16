@@ -20,23 +20,23 @@ module Poster
   # TODO use .erb template
   # TODO complete code block syntax in posts using either a default language or CL param
 
-  def self.convert(options = {})
-    options.merge!(DEFAULT_OPTIONS)
+  def self.convert(opts = {})
+    options = DEFAULT_OPTIONS.merge(opts)
 
     if (options[:files])
-      p "Would normally work on these files, but ignoring explicit file lists for now: #{options[:files]}"
+      $stderr.puts "Would normally work on these files, but ignoring explicit file lists for now: #{options[:files]}"
     end
 
     wd = options[:source_dir]
-    p "working in : #{wd}"
+    $stderr.puts "working in : #{wd}"
 
     files = Finder.find(wd, options[:recursive])
-    p "found #{files.size} file(s) to convert:"
+    $stderr.puts "found #{files.size} file(s) to convert:"
     files.each{ |f| p f}
 
     files.each { |f|
       posts = Parser.extract(f)
-      p "extracted #{posts.size} posts from #{f}"
+      $stderr.puts "extracted #{posts.size} posts from #{f}"
       Planter.post(posts, options[:blog])
     }
   end
