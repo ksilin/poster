@@ -5,15 +5,15 @@ require 'date'
 module Poster
   describe Parser do
 
-    let(:no_posts){"bla \n text\n"}
-    let(:one_post){"### bla \n text\n"}
-    let(:two_posts){"### bla \n text\n ### blub \n more text\n"}
+    let(:no_posts) { "bla \n text\n" }
+    let(:one_post) { "### bla \n text\n" }
+    let(:two_posts) { "### bla \n text\n ### blub \n more text\n" }
 
-    let(:one_post_after_plain_text){"hello ### goodbye"}
+    let(:one_post_after_plain_text) { 'hello ### goodbye' }
 
-    let(:wrong_delimiter){"***bla \n text\n"}
-    let(:too_short_delimiter){"## bla \n text\n"}
-    let(:too_long_delimiter){"#### bla \n text\n"}
+    let(:wrong_delimiter) { "***bla \n text\n" }
+    let(:too_short_delimiter) { "## bla \n text\n" }
+    let(:too_long_delimiter) { "#### bla \n text\n" }
 
     describe 'splitting notes' do
 
@@ -69,20 +69,20 @@ module Poster
       it 'should extract titles' do
 
         split = Parser.split(one_post)
-        titles = split.map { |post| Parser.title(post) }
+        titles = split.map { |post| Parser.first_line(post) }
         expect(titles).to match_array ['bla']
       end
 
       it 'should extract multiple titles' do
         split = Parser.split(two_posts)
-        titles = split.map { |post| Parser.title(post) }
+        titles = split.map { |post| Parser.first_line(post) }
         expect(titles).to match_array ['bla', 'blub']
       end
 
       it 'should drop everything before the first title' do
 
         split = Parser.split(one_post_after_plain_text)
-        titles = split.map { |post| Parser.title(post) }
+        titles = split.map { |post| Parser.first_line(post) }
         expect(titles).to match_array ['goodbye']
       end
 
@@ -91,19 +91,24 @@ module Poster
       # suggest the most probably candidates
       # what char is found 3 or 4 times most in a row that is followed by a blank line
 
-      it 'only three hashes are a title' do
+      it 'only three hashes count as a title' do
         split = Parser.split(" # a \n ## b \n #### c")
         expect(split).to match_array []
       end
 
-
       it 'should drop everything before the first title' do
-        split = Parser.drop_before_first_title(one_post_after_plain_text)
+        split = Parser.drop_everything_before_first_title(one_post_after_plain_text)
         expect(split).to match '### goodbye'
       end
 
-      it 'should provide default title if title extraction fails' do
-        expect(Parser.title('')).to eq Parser::TITLE_NOT_FOUND
+      it 'a title is just the first line of a string' do
+        title = Parser.first_line(no_posts)
+        expect(title).to eq 'bla'
+      end
+
+      it 'should fail if title extraction fails 2' do
+        title = Parser.first_line('')
+        expect(title).to eq ''
       end
 
       it 'should support configurable title format'

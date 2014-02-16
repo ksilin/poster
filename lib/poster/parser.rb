@@ -1,8 +1,6 @@
 module Poster
   class Parser
 
-    TITLE_NOT_FOUND = 'Parser warning: no title found'
-
     # TODO - have to dynamically determine the top header level
     # the default top header level is h3 /'###'
     THREE_HASHES = /(?<!#)###(?!#)/
@@ -25,39 +23,41 @@ module Poster
     # turns out, we dont need that crap, since Date will do it for us
     DATE = /(\d){4}\D(\d){1,2}\D(\d){1,2}/
 
-    def self.split(content)
-
-      return [] if content.nil? || content.empty?
-
-
-      if !(content =~ THREE_HASHES)
-
-        STDERR.puts "#{TITLE_NOT_FOUND} for : #{content}"
-        return []
-      end
-      puts "found header at #{content =~ THREE_HASHES}"
-      # remove everything before the first title delimiter
-      content = drop_before_first_title(content)
-      content.split(THREE_HASHES).reject { |post| post.nil? || post.empty? }
+    # TODO - extracting Post instances is not the job of a parser. move it up.
+    def self.extract(filename)
+      content = File.open(filename).read
+      as_posts(split(content), Date.parse(filename))
     end
 
-    def self.drop_before_first_title(content)
+    def self.split(content)
+      return [] if empty(content) || contains_no_titles(content)
+
+      $stderr.puts "found title at #{content =~ THREE_HASHES}"
+      content = drop_everything_before_first_title(content)
+      content.split(THREE_HASHES).reject { |post| empty(post) }
+    end
+
+    def self.contains_no_titles(content)
+      content !~ THREE_HASHES
+    end
+
+    def self.empty(content)
+      content.nil? || content.empty?
+    end
+
+    def self.drop_everything_before_first_title(content)
       content.slice(content.index(THREE_HASHES)..-1)
     end
 
-
-    def self.title(post)
-      return TITLE_NOT_FOUND if post.nil? || post.empty?
+    def self.first_line(post)
+      return '' if empty(post)
       post.split("\n")[0].strip
     end
 
-    def self.extract(filename)
-      content = File.open(filename).read
-      posts = split(content)
-
-      posts.reduce([]) { |result, p|
-        result << Post.new(title(p), ENV['USERNAME'], p,  Date.parse(filename), Time.now)
-      }
+    def self.as_posts(posts, date)
+      posts.reduce([]) do |result, p|
+        result << Post.new(first_line(p), ENV['USERNAME'], p, date, Time.now)
+      end
     end
 
   end
