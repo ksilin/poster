@@ -30,18 +30,18 @@ module Poster
     end
 
     def self.split(content)
-      return [] if empty(content) || contains_no_titles(content)
+      return [] if empty?(content) || contains_no_titles(content)
 
       $stderr.puts "found title at #{content =~ THREE_HASHES}"
       content = drop_everything_before_first_title(content)
-      content.split(THREE_HASHES).reject { |post| empty(post) }
+      content.split(THREE_HASHES).reject { |post| empty?(post) }
     end
 
     def self.contains_no_titles(content)
       content !~ THREE_HASHES
     end
 
-    def self.empty(content)
+    def self.empty?(content)
       content.nil? || content.empty?
     end
 
@@ -50,7 +50,7 @@ module Poster
     end
 
     def self.first_line(post)
-      return '' if empty(post)
+      return '' if empty?(post)
       post.split("\n")[0].strip
     end
 

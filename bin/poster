@@ -19,7 +19,7 @@ def get_command_line_options
   options = {}
   opt_parser = OptionParser.new do |opts|
 
-    opts.on('-n', '--dry-run', 'Effects no changes, prints all steps') do
+    opts.on('-n', '--dry-run', 'Changes only logged, not performed.') do
       options[:dry_run] = true
     end
 
@@ -41,6 +41,8 @@ def get_command_line_options
       end
       options[:target_name] = target
     end
+
+    opts.on('-l', '--list', 'List all known targets.')
 
     opts.on_tail('-h', '--help', 'Show this message') do
       puts opts

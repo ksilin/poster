@@ -4,7 +4,7 @@ require 'spec_helper'
 module Poster
   describe Planter do
 
-    it 'should should copy the post into the appropriate dir' do
+    it 'should copy the post into the appropriate dir' do
       post = Post.new
       full_path = File.join(Planter.post_dir(:test), post.filename)
       expect(File.exist?(full_path)).to be false

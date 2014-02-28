@@ -3,24 +3,26 @@ class Planter
 
   # TODO - force, forbid or query overwriting of existing files
   # overwrite controls
-  def self.post(posts, blog, overwrite = true, force = false)
+  def self.post(posts, blog, opts = {})
+    options = {overwrite: true, force: false, dry_run: false, verbose: false}.merge(opts)
 
     Array(posts).each { |post|
 
       post_dir = post_dir(blog)
-      raise "target directory #{post_dir} not found" unless Dir.exist? post_dir
+      fail "target directory #{post_dir} not found" unless Dir.exist? post_dir
 
       full_path = File.join(post_dir, post.filename)
 
-      exist = File.exist? full_path
-      p "file ##{full_path} exists: #{exist}"
-      if exist
-        p "stats for file ##{full_path}"
-        p File.stat full_path
+      exists = File.exist? full_path
+      if exists
+        warn "file ##{full_path} already exists: #{exists}"
+        $stderr.puts "stats for file ##{full_path}" if options[:verbose]
+        $stdout.puts "#{File.stat(full_path).inspect}" if options[:verbose]
       end
+
       # TODO - if the path dir does not exist, the processing should skip this file
-      puts "Creating new post: #{full_path}"
-      write_post_to_file(full_path, post)
+      $stdout.puts "Creating new post: #{full_path}"
+      write_post_to_file(full_path, post) unless options[:dry_run]
     }
   end
 

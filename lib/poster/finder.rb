@@ -21,7 +21,7 @@ module Poster
       File.file?(f) && Validator.valid_post_filename?(f)
     end
 
-    def self.do_not_traverse(dir, file, recursive)
+    def self.do_not_traverse(dir, file, recursive = false)
       !recursive && File.directory?(file) && file != dir
     end
   end

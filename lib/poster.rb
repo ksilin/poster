@@ -9,6 +9,7 @@ module Poster
 
   DEFAULT_OPTIONS = {
       :blog => :test,
+      :verbose => false,
       :source_dir => Dir.pwd,
       :recursive => false,
       :overwrite => true,
@@ -21,6 +22,7 @@ module Poster
   # TODO complete code block syntax in posts using either a default language or CL param
 
   def self.convert(opts = {})
+    binding.pry
     options = DEFAULT_OPTIONS.merge(opts)
 
     if (options[:files])
@@ -28,15 +30,15 @@ module Poster
     end
 
     wd = options[:source_dir]
-    $stderr.puts "working in : #{wd}"
+    $stderr.puts "working in : #{wd}" if options[:verbose]
 
-    files = Finder.find(wd, options[:recursive])
-    $stderr.puts "found #{files.size} file(s) to convert:"
-    files.each{ |f| p f}
+    files = Finder.find(wd, options)
+    $stderr.puts "found #{files.size} file(s) to convert:" if options[:verbose]
+    files.each { |f| $stderr.puts f } if options[:verbose]
 
     files.each { |f|
       posts = Parser.extract(f)
-      $stderr.puts "extracted #{posts.size} posts from #{f}"
+      $stderr.puts "extracted #{posts.size} posts from #{f}" if options[:verbose]
       Planter.post(posts, options[:blog])
     }
   end
