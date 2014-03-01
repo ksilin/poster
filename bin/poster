@@ -36,7 +36,6 @@ def get_command_line_options
 
     opts.on('-t', '--target TARGET', TARGET_MSG) do |target|
       ensure_alphanumeric(target)
-      $stderr.puts "posting into #{target}"
       options[:target_name] = target
     end
 

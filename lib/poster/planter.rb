@@ -1,10 +1,9 @@
 # puts the posts where they belong
 class Planter
   # TODO: force, forbid or query overwriting of existing files
-  # TODO: I dislike printing from the planter - do it in the poster
   def self.post(posts, blog, opts = {})
     options = { overwrite: true, force: false, dry_run: false, verbose: false }.merge(opts)
-
+    $stderr.puts "posting into #{target}" if options[:verbose]
     posts.each do |_source_file, po|
       po.each do |post|
 

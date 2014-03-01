@@ -10,7 +10,7 @@ To enhance the learning, a bunch of constraints can be applied to each section.
 
 Typical constraints include using no mouse (how comfortable are you with outr tools?), no if statements (branching is easy, but not elegant), not talking to each other (lat the code do the talking). [Here are some more](http://coderetreat.org/group/facilitators/forum/topics/what-are-some-exercises-and-constraints-that-people-use-during-se)
 
-Use any programming language you might want to. Let your partner show you a language you are not familiar or comfortable with. 
+Use any programming language you might want to. Let your partner show you a language you are not familiar or comfortable with.
 
 So what did I learn and reiterated?
 
@@ -56,10 +56,3 @@ There is a [bunch of gems](https://www.ruby-toolbox.com/categories/Terminal_Colo
 * [colorize](https://github.com/fazibear/colorize) - swiftly rising, medium popularity
 
 I'm a magpie, so I go for the new, shiny stuff first. Let's try colorize.
-
-
-
- 
-
-
-
