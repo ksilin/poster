@@ -2,7 +2,7 @@ require 'find'
 require_relative 'validator'
 
 module Poster
-  class Finder
+  module Finder
     def self.find(dir = Dir.pwd, opts = {})
       opts = { recursive: false }.merge(opts)
       $stderr.puts "working in : #{dir}" if opts[:verbose]

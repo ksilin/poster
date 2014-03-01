@@ -1,5 +1,5 @@
 module Poster
-  class Parser
+  module Parser
     # TODO: have to dynamically determine the top header level
     # the default top header level is h3 /'###'
     THREE_HASHES = /(?<!#)###(?!#)/

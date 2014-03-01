@@ -1,4 +1,4 @@
-require 'poster'
+require 'main'
 require 'tmpdir'
 
 # for test coverage reports
