@@ -7,7 +7,7 @@ require 'poster/conf'
 
 module Poster
   DEFAULT_OPTIONS = {
-      blog: :test,
+      target_name: :test,
       verbose: false,
       source_dir: Dir.pwd,
       recursive: false,
@@ -23,11 +23,12 @@ module Poster
   def self.convert(opts = {})
     options = DEFAULT_OPTIONS.merge(opts)
 
+
     print_explicit_file_list_warning(options[:files]) if options[:files]
 
     files = find(options)
     posts = extract(files, options[:verbose])
-    Planter.post(posts, options[:blog])
+    Planter.post(posts, options[:target_name])
   end
 
   def self.extract(files, verbose)

@@ -33,7 +33,7 @@ class Planter
   def self.post_dir(blog)
     # TODO extract conf instantiation from here
     conf = Conf.new
-    return Dir.pwd unless conf[:blogs][blog]
-    File.join(Dir.home, conf[:blogs][blog], conf[:source_dir], conf[:posts_dir])
+    return Dir.pwd unless conf[:blogs][blog.to_sym]
+    File.join(Dir.home, conf[:blogs][blog.to_sym], conf[:source_dir], conf[:posts_dir])
   end
 end
