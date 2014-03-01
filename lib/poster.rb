@@ -5,6 +5,8 @@ require 'poster/planter'
 require 'poster/post'
 require 'poster/conf'
 
+require 'colorize'
+
 module Poster
   DEFAULT_OPTIONS = {
       target_name: :test,
@@ -23,18 +25,29 @@ module Poster
   def self.convert(opts = {})
     options = DEFAULT_OPTIONS.merge(opts)
 
-
     print_explicit_file_list_warning(options[:files]) if options[:files]
 
     files = find(options)
     posts = extract(files, options[:verbose])
+    print_summary(posts)
+
     Planter.post(posts, options[:target_name])
   end
 
+  def self.print_summary(posts)
+    posts.each do |source_file, po|
+      color = po.empty? ? :red : :green
+      $stdout.puts "#{source_file}".colorize(color)
+      po.each do |post|
+        $stdout.puts "-> #{post.filename}".colorize(:light_blue)
+      end
+    end
+  end
+
   def self.extract(files, verbose)
-    files.inject([]) do |sum, f|
+    files.inject({}) do |sum, f|
       extracted = Parser.extract(f)
-      sum += extracted
+      sum[f] = extracted
       $stderr.puts "extracted #{extracted.size} posts from #{f}" if verbose
       sum
     end
@@ -42,9 +55,8 @@ module Poster
 
   def self.find(options)
     files = Finder.find(options[:source_dir], options)
-    verbose = options[:verbose]
-    $stderr.puts "found #{files.size} file(s) to convert:" if verbose
-    files.each { |f| $stderr.puts f }
+    $stderr.puts "found #{files.size} file(s) to convert:" if options[:verbose]
+    files.each { |f| $stderr.puts f } if options[:verbose]
     files
   end
 
