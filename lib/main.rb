@@ -31,9 +31,15 @@ module Poster
       files = find(dir: options[:source_dir],
                    recursive: options[:recursive],
                    verbose: options[:verbose])
-      results = extract(files, options[:verbose])
+
+      results = extract(files: files)
       print_summary(results: results)
       $stderr.puts "posting into #{options[:target_name]}" if options[:verbose]
+
+      post(results, options)
+    end
+
+    def self.post(results, options)
       results.each do |_file, posts|
         Planter.post(posts: posts, target: options[:target_name], opts: options)
       end
@@ -49,11 +55,9 @@ module Poster
       end
     end
 
-    def self.extract(files, verbose)
+    def self.extract(files:)
       files.inject({}) do |sum, f|
-        extracted = Parser.extract(f)
-        sum[f] = extracted
-        $stderr.puts "extracted #{extracted.size} posts from #{f}" if verbose
+        sum[f] = Parser.extract(f)
         sum
       end
     end
