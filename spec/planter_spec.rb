@@ -9,7 +9,7 @@ module Poster
       full_path = File.join(Planter.post_dir(:test), post.filename)
       expect(File.exist?(full_path)).to be false
 
-      Planter.post([post], :test)
+      Planter.post(posts: [post], target: :test)
 
       expect(File.exist?(full_path)).to be true
       File.delete(full_path)
@@ -19,7 +19,7 @@ module Poster
       files_in_current_dir = File.join(Dir.pwd, '*')
       before = Dir.glob(files_in_current_dir)
 
-      Planter.post(nil, :test)
+      Planter.post(posts: nil, target: :test)
 
       after = Dir.glob(files_in_current_dir)
       expect(after).to match_array before

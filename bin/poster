@@ -40,7 +40,7 @@ def get_command_line_options
     end
 
     opts.on('-v', '--verbose', 'more output') { options[:verbose] = true }
-    opts.on('-l', '--list', 'List all known targets.') { print_known_blogs }
+    opts.on('-l', '--list', 'List all known targets.') { print_known_targets }
     opts.on('--config', 'List all configuration parameters.') { print_config }
 
     opts.on_tail('-h', '--help', 'Show this message') { puts opts }
@@ -56,14 +56,14 @@ end
 
 def ensure_alphanumeric(target)
   unless target =~ /^[_\-[:alnum:]]+$/
-    fail ArgumentError, 'target must be alphanumeric with _ or/and -'
+    fail ArgumentError, 'target must be alphanumeric including _ and -'
   end
 end
 
-def print_known_blogs
+def print_known_targets
   conf = Conf.new
   puts
-  puts 'known blogs:'
+  puts 'known targets:'
   pp conf[:blogs]
   puts
 end

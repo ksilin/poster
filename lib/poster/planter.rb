@@ -2,11 +2,11 @@
 module Poster
   module Planter
     # TODO: force, forbid or query overwriting of existing files
-    def self.post(posts, blog, opts = {})
+    def self.post(posts:, target:, opts: {})
       options = { overwrite: true, force: false, dry_run: false, verbose: false }.merge(opts)
       Array(posts).each do |post|
 
-        post_dir = post_dir(blog)
+        post_dir = post_dir(target)
         fail "target directory #{post_dir} not found" unless Dir.exist? post_dir
 
         full_path = File.join(post_dir, post.filename)

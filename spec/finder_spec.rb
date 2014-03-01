@@ -17,25 +17,25 @@ module Poster
 
       it 'should find all .md and .markdown files' do
         with_tempdir(markdown_files) do |dir|
-          expect(Finder.find(dir)).to have(2).items
+          expect(Finder.find(dir: dir)).to have(2).items
         end
       end
 
       it 'should find all .md and .markdown files' do
         with_tempdir(other_extensions) do |dir|
-          expect(Finder.find(dir)).to be_empty
+          expect(Finder.find(dir: dir)).to be_empty
         end
       end
 
       it 'should not find files with containing .md and .markdown but not as extensions' do
         with_tempdir(not_as_extension) do |dir|
-          expect(Finder.find(dir)).to be_empty
+          expect(Finder.find(dir: dir)).to be_empty
         end
       end
 
       it 'should not find dotfiles' do
         with_tempdir(dotfiles) do |dir|
-          found = Finder.find(dir)
+          found = Finder.find(dir: dir)
           expect(found).to be_empty
         end
       end
@@ -44,7 +44,7 @@ module Poster
     # TODO: make this optional
     it 'should ignore files without a parseable dates in the name' do
       with_tempdir(no_dates) do |dir|
-        expect(Finder.find(dir)).to eq []
+        expect(Finder.find(dir: dir)).to eq []
       end
     end
 
@@ -52,7 +52,7 @@ module Poster
 
       it 'should find files in nested dirs ' do
         with_tempdir(nested) do |dir|
-          found = Finder.find(dir, recursive: true)
+          found = Finder.find(dir: dir, recursive: true)
           expect(found).to have(2).items
         end
       end
@@ -62,7 +62,7 @@ module Poster
 
       it 'should ignore files in nested dirs ' do
         with_tempdir(nested) do |dir|
-          expect(Finder.find(dir)).to be_empty
+          expect(Finder.find(dir: dir)).to be_empty
         end
       end
     end

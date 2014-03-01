@@ -28,15 +28,18 @@ module Poster
 
       print_explicit_file_list_warning(options[:files]) if options[:files]
 
-      files = find(options)
+      files = find(dir: options[:source_dir],
+                   recursive: options[:recursive],
+                   verbose: options[:verbose])
       results = extract(files, options[:verbose])
-      print_summary(results, options)
-      results.each do |_file, post|
-        Planter.post(post, options[:target_name], options)
+      print_summary(results: results)
+      $stderr.puts "posting into #{options[:target_name]}" if options[:verbose]
+      results.each do |_file, posts|
+        Planter.post(posts: posts, target: options[:target_name], opts: options)
       end
     end
 
-    def self.print_summary(results, options = {})
+    def self.print_summary(results:)
       results.each do |source_file, posts|
         color = posts.empty? ? :red : :green
         $stdout.puts "#{source_file}".colorize(color)
@@ -44,7 +47,6 @@ module Poster
           $stdout.puts "-> #{post.filename}".colorize(:light_blue)
         end
       end
-      $stderr.puts "posting into #{options[:target_name]}" if options[:verbose]
     end
 
     def self.extract(files, verbose)
@@ -56,10 +58,10 @@ module Poster
       end
     end
 
-    def self.find(options)
-      files = Finder.find(options[:source_dir], options)
-      $stderr.puts "found #{files.size} file(s) to convert:" if options[:verbose]
-      files.each { |f| $stderr.puts f } if options[:verbose]
+    def self.find(dir:, recursive:, verbose:)
+      files = Finder.find(dir: dir, recursive: recursive, verbose: verbose)
+      $stderr.puts "found #{files.size} file(s) to convert:" if verbose
+      files.each { |f| $stderr.puts f } if verbose
       files
     end
 

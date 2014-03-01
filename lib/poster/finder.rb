@@ -3,12 +3,11 @@ require_relative 'validator'
 
 module Poster
   module Finder
-    def self.find(dir = Dir.pwd, opts = {})
-      opts = { recursive: false }.merge(opts)
-      $stderr.puts "working in : #{dir}" if opts[:verbose]
+    def self.find(dir: Dir.pwd, recursive: false, verbose: false )
+      $stderr.puts "working in : #{dir}" if verbose
 
       Find.find(dir).select do |f|
-        prune(dir, f, opts[:recursive])
+        prune(dir, f, recursive)
         valid?(f)
       end
     end
