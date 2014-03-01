@@ -10,18 +10,14 @@ module Poster
         fail "target directory #{post_dir} not found" unless Dir.exist? post_dir
 
         full_path = File.join(post_dir, post.filename)
-        warn_if_file_exists(full_path, options)
+        warn_if_file_exists(full_path) if options[:verbose]
         write_post_to_file(full_path, post) unless options[:dry_run]
       end
     end
 
-    def self.warn_if_file_exists(full_path, options)
+    def self.warn_if_file_exists(full_path)
       exists = File.exist? full_path
-      if exists && options[:verbose]
-        warn "file ##{full_path} already exists: #{exists}"
-        $stderr.puts "stats for file ##{full_path}" if options[:verbose]
-        $stdout.puts "#{File.stat(full_path).inspect}" if options[:verbose]
-      end
+      warn "file ##{full_path} already exists, overwriting" if exists
     end
 
     def self.write_post_to_file(full_path, post)
@@ -31,11 +27,11 @@ module Poster
       end
     end
 
-    def self.post_dir(blog)
-      # TODO extract conf instantiation from here
+    def self.post_dir(target_name)
       conf = Conf.new
-      return Dir.pwd unless conf[:blogs][blog.to_sym]
-      File.join(Dir.home, conf[:blogs][blog.to_sym], conf[:source_dir], conf[:posts_dir])
+      target_path = conf[:blogs][target_name.to_sym]
+      return Dir.pwd unless target_path
+      File.join(Dir.home, target_path, conf[:source_dir], conf[:posts_dir])
     end
   end
 end

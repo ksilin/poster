@@ -14,17 +14,16 @@ require 'pp'
 # TODO: merge config with cl params
 
 TARGET_MSG = 'Specify the TARGET blog for extracted posts'
-FILE_LIST_MSG = 'Which files to convert. ' +
-    'No standard filename checks are performed. ' +
+FILE_LIST_MSG = 'Which files to convert. ' \
+    'No standard filename checks are performed. ' \
     'Defaults to all files in the working directory.'
 DRY_RUN_MSG = 'Changes only logged, not performed.'
-SOURCE_PATH_MSG = 'The path to the folder '+
-    'containing the files to convert. ' +
+SOURCE_PATH_MSG = 'The path to the folder ' \
+    'containing the files to convert. ' \
     'Defaults to the working directory: '
 RECURSIVE_MSG = 'Converts all files in all subdirectories. False by default.'
 
-def get_command_line_options
-  options = {}
+def get_command_line_options(options = {})
   parser = OptionParser.new do |opts|
     opts.on('-n', '--dry-run', DRY_RUN_MSG) { options[:dry_run] = true }
     opts.on('-r', '--recursive', RECURSIVE_MSG) { options[:recursive] = true }

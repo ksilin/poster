@@ -40,7 +40,7 @@ module Poster
     end
 
     def self.post(results, options)
-      results.each do |_file, posts|
+      results.each_value do |posts|
         Planter.post(posts: posts, target: options[:target_name], opts: options)
       end
     end
@@ -56,7 +56,7 @@ module Poster
     end
 
     def self.extract(files:)
-      files.inject({}) do |sum, f|
+      files.reduce({}) do |sum, f|
         sum[f] = Parser.extract(f)
         sum
       end

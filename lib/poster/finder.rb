@@ -3,7 +3,7 @@ require_relative 'validator'
 
 module Poster
   module Finder
-    def self.find(dir: Dir.pwd, recursive: false, verbose: false )
+    def self.find(dir: Dir.pwd, recursive: false, verbose: false)
       $stderr.puts "working in : #{dir}" if verbose
 
       Find.find(dir).select do |f|
