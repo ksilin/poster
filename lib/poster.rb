@@ -25,7 +25,7 @@ module Poster
     binding.pry
     options = DEFAULT_OPTIONS.merge(opts)
 
-    if (options[:files])
+    if options[:files]
       $stderr.puts "Would normally work on these files, but ignoring explicit file lists for now: #{options[:files]}"
     end
 

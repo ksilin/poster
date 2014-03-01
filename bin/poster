@@ -51,7 +51,7 @@ def get_command_line_options
   end
 
   opt_parser.parse!
-  return options
+  options
 end
 
 options = get_command_line_options

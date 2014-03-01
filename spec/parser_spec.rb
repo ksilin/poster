@@ -56,7 +56,7 @@ module Poster
 
       # this is kinda obvious. Am I testing File.read here?
       it 'should not find posts in an empty file' do
-        with_tempdir_and_files([:foo]) { |dir, files|
+        with_tempdir_and_files([:foo]) { |_dir, files|
           split = Parser.split(File.open(files[0]).read)
           expect(split).to match_array []
         }
@@ -76,7 +76,7 @@ module Poster
       it 'should extract multiple titles' do
         split = Parser.split(two_posts)
         titles = split.map { |post| Parser.first_line(post) }
-        expect(titles).to match_array ['bla', 'blub']
+        expect(titles).to match_array %w(bla blub)
       end
 
       it 'should drop everything before the first title' do

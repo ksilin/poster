@@ -7,7 +7,7 @@ describe 'simple' do
 
     # TODO expect no files
 
-    Open3.popen3('bin/poster -h ~/Desktop/md/done') { |stdin, stdout, stderr, wait_thr|
+    Open3.popen3('bin/poster -h ~/Desktop/md/done') { |_stdin, stdout, stderr, wait_thr|
       pid = wait_thr.pid # pid of the started process.
       exit_status = wait_thr.value # Process::Status object returned.
 
