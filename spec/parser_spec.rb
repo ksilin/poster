@@ -56,10 +56,10 @@ module Poster
 
       # this is kinda obvious. Am I testing File.read here?
       it 'should not find posts in an empty file' do
-        with_tempdir_and_files([:foo]) { |_dir, files|
+        with_tempdir_and_files([:foo]) do |_dir, files|
           split = Parser.split(File.open(files[0]).read)
           expect(split).to match_array []
-        }
+        end
       end
 
     end

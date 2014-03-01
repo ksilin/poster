@@ -1,12 +1,11 @@
 module Poster
   class Post
-
     # TODO add tags/categories
 
     attr_reader :title, :author, :content, :created_at, :posted_at
 
     # TODO - to named key params
-    def initialize(title = 'Title could not be found', author = ENV['USERNAME'], content = 'lorem ipsum', created_at = Time.now, posted_at = Time.now )
+    def initialize(title = 'Title could not be found', author = ENV['USERNAME'], content = 'lorem ipsum', created_at = Time.now, posted_at = Time.now)
       @title = title
       @author = author
       @content = content
@@ -42,6 +41,5 @@ module Poster
     def slug
       title.split.join('-').gsub(/[^\w-]+/, '')
     end
-
   end
 end

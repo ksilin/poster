@@ -58,4 +58,3 @@ module Poster
     end
   end
 end
-

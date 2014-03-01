@@ -10,4 +10,3 @@ Given /^the file "([^\/].+)" doesn't exist$/ do |file|
   puts 'relative path'
   FileUtils.rm(file) if File.exists? file
 end
-

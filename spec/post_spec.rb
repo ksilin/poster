@@ -1,9 +1,8 @@
 require 'rspec'
 require 'spec_helper'
-#require 'active_support/core_ext/numeric/time'
+# require 'active_support/core_ext/numeric/time'
 
 module Poster
-
   describe Post do
 
     it 'should create a valid post with default params' do
@@ -18,7 +17,7 @@ module Poster
     it 'should create a valid filename with default params' do
       post = Post.new
       filename = post.filename
-      expect(filename).to match /^(\d)+-+.*.markdown$/
+      expect(filename).to match(/^(\d)+-+.*.markdown$/)
     end
   end
 end

@@ -1,6 +1,6 @@
 Feature: We can convert existing files to posts
   As a busy developer with a lot of things to do
-  I want to convert files containing note to the octopress format and put them into a blog
+  I want to convert files containing notes to the octopress format and put them into a blog
 
 #   `pwd`, run in a step here returns <path_to_project>/tmp/aruba
 

@@ -1,7 +1,6 @@
 require 'yaml'
 
 class Conf
-
   # TODO should it be pwd or __FILE__ ?
   # pwd - expect the config among the notes
   # __FILE__ expect the config inside the gem
@@ -11,8 +10,7 @@ class Conf
   def initialize
     if File.exists? CONFIG_FILE
       @config_options = YAML.load_file(CONFIG_FILE)
-      p @config_options
-      #options.merge!(config_options)
+      # options.merge!(config_options)
     end
   end
 
@@ -23,5 +21,4 @@ class Conf
   def []=(index, value)
     @config_options[index] = value
   end
-
 end

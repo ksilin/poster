@@ -1,6 +1,5 @@
 module Poster
   class Validator
-
     # ends in .md or .markdown
     BASENAME = /^([0-9a-zA-Z_\-\/\.])+([0-9a-zA-Z_])\.m(d|arkdown)$/
     EXTENSIONS = /^\.m(d|arkdown)$/
@@ -28,5 +27,4 @@ module Poster
       !!Date.parse(sanitized) rescue false
     end
   end
-
 end

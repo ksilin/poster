@@ -13,7 +13,7 @@ module Poster
 
       expect(File.exist?(full_path)).to be true
       File.delete(full_path)
-      end
+    end
 
     it 'should should not do anything if passed nil' do
       files_in_current_dir = File.join(Dir.pwd, '*')

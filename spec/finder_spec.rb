@@ -41,7 +41,7 @@ module Poster
       end
     end
 
-    # TODO - make this optional
+    # TODO: make this optional
     it 'should ignore files without a parseable dates in the name' do
       with_tempdir(no_dates) do |dir|
         expect(Finder.find(dir)).to eq []
@@ -68,6 +68,4 @@ module Poster
     end
 
   end
-
 end
-
