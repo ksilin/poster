@@ -33,12 +33,15 @@ def get_command_line_options(options = {})
       options[:source_dir] = path
     end
 
+    # TODO: try keyword completion:
+    # http://ruby-doc.org/stdlib-1.9.3/libdoc/optparse/rdoc/OptionParser.html#method-i-on_tail
     opts.on('-t', '--target TARGET', TARGET_MSG) do |target|
       ensure_alphanumeric(target)
       options[:target_name] = target
     end
 
     opts.on('-v', '--verbose', 'more output') { options[:verbose] = true }
+    opts.on('-i', '--interactive', 'interactive processing') { options[:interactive] = true }
     opts.on('-l', '--list', 'List all known targets.') { print_known_targets }
     opts.on('--config', 'List all configuration parameters.') { print_config }
 

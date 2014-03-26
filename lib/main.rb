@@ -6,6 +6,7 @@ require 'poster/post'
 require 'poster/conf'
 
 require 'colorize'
+require 'readline'
 
 module Poster
   module Main
@@ -32,6 +33,16 @@ module Poster
                    recursive: options[:recursive],
                    verbose: options[:verbose])
 
+      #files.each { |file|
+      #    if options[:interactive]
+      #      read = nil
+      #      until %w(Y y N n A a).any? {|char| char == read}
+      #        read = Readline.readline("post? [Y(es)|n(ext)|a(bort)]> ")
+      #      end
+      #      puts read
+      #    end
+      #}
+      #end
       results = extract(files: files)
       print_summary(results: results)
       $stderr.puts "posting into #{options[:target_name]}" if options[:verbose]
