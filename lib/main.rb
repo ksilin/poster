@@ -20,9 +20,10 @@ module Poster
         files: nil
     }
 
-    # TODO: control overwriting the target
+    # TODO: test for overwriting control
     # TODO: use .erb template
-    # TODO: complete code block syntax in posts using either a default language or CL param
+    # TODO: complete code block syntax in posts
+    # using either a default language or CL param
 
     def self.convert(opts = {})
       options = DEFAULT_OPTIONS.merge(opts)
@@ -33,6 +34,7 @@ module Poster
                    recursive: options[:recursive],
                    verbose: options[:verbose])
 
+      print_found_files(files) if options[:verbose]
       #files.each { |file|
       #    if options[:interactive]
       #      read = nil
@@ -43,14 +45,15 @@ module Poster
       #    end
       #}
       #end
+
       results = extract(files: files)
       print_summary(results: results)
-      $stderr.puts "posting into #{options[:target_name]}" if options[:verbose]
 
       post(results, options)
     end
 
     def self.post(results, options)
+      $stderr.puts "posting into #{options[:target_name]}" if options[:verbose]
       results.each_value do |posts|
         Planter.post(posts: posts, target: options[:target_name], opts: options)
       end
@@ -67,17 +70,18 @@ module Poster
     end
 
     def self.extract(files:)
-      files.reduce({}) do |sum, f|
+      files.each_with_object({}) do |f, sum|
         sum[f] = Parser.extract(f)
-        sum
       end
     end
 
     def self.find(dir:, recursive:, verbose:)
-      files = Finder.find(dir: dir, recursive: recursive, verbose: verbose)
-      $stderr.puts "found #{files.size} file(s) to convert:" if verbose
-      files.each { |f| $stderr.puts f } if verbose
-      files
+      Finder.find(dir: dir, recursive: recursive, verbose: verbose)
+    end
+
+    def self.print_found_files(files)
+      $stderr.puts "found #{files.size} file(s) to convert:"
+      files.each { |f| $stderr.puts f }
     end
 
     def print_explicit_file_list_warning(files)

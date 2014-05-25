@@ -1,5 +1,6 @@
 require 'rspec'
 require 'spec_helper'
+require 'pry'
 
 module Poster
   describe Planter do
@@ -7,6 +8,9 @@ module Poster
     it 'should copy the post into the appropriate dir' do
       post = Post.new
       full_path = File.join(Planter.post_dir(:test), post.filename)
+
+      puts "looking for #{full_path}"
+      File.delete full_path
       expect(File.exist?(full_path)).to be false
 
       Planter.post(posts: [post], target: :test)
@@ -31,11 +35,13 @@ module Poster
     it 'should overwrite existing files by default' do
 
     end
-    it 'should message to stderr when overwriting files'
-    it 'should not overwrite existing files when if they are newer than the posted_at date'
-    it 'should message to stderr when not overwriting existing files when if they are newer than the posted_at date'
 
-    it 'should not overwrite existing files when overwriting is forbidden'
+    describe 'overwriting files'
+    it 'should message to stderr when overwriting files'
+    it 'should not overwrite files if newer than the posted_at date'
+    it 'should message to stderr when not overwriting files'
+
+    it 'should not overwrite files when overwriting is forbidden'
 
   end
 end

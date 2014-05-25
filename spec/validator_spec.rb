@@ -14,26 +14,26 @@ module Poster
 
       it 'only .*.md and .*.markdown files can be valid' do
         markdown_files.each do |f|
-          expect(Validator.valid_post_filename?(f)).to be true
+          expect(Validator.new.valid_post_filename?(f)).to be true
         end
       end
 
       it 'other extensions are not valid' do
         other_extensions.each do |f|
-          expect(Validator.valid_post_filename?(f)).to be false
+          expect(Validator.new.valid_post_filename?(f)).to be false
         end
       end
 
       it 'filenames containing .md and .markdown, but not as extension are not valid' do
         not_as_extension.each do |f|
-          expect(Validator.valid_post_filename?(f)).to be false
+          expect(Validator.new.valid_post_filename?(f)).to be false
         end
       end
 
       # they dont have any dates neither
       it 'dotfiles called .md or .markdown are not valid' do
         dotfiles.each do |f|
-          expect(Validator.valid_post_filename?(f)).to be false
+          expect(Validator.new.valid_post_filename?(f)).to be false
         end
       end
     end
@@ -43,13 +43,13 @@ module Poster
 
       it 'should not find dates where there are none' do
         no_dates.each do |f|
-          expect(Validator.date_parseable(f)).to be false
+          expect(Validator.new.date_parseable(f)).to be false
         end
       end
 
       it 'should not find dates where there are none' do
         markdown_files.each do |f|
-          expect(Validator.date_parseable(f)).to be true
+          expect(Validator.new.date_parseable(f)).to be true
         end
       end
 

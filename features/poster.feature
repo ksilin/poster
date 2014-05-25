@@ -16,3 +16,7 @@ Feature: We can convert existing files to posts
     Then the stdout should contain "found 1 file(s) to convert"
     And the stdout should contain "notes_2013.12.31.md"
     And the output should match /extracted 0 posts from .*notes_2013.12.31.md/
+
+#  Scenario: Reading the configuration in the working dir
+#    Given I cd to
+#    And a file named "<string>" exists

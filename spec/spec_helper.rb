@@ -51,11 +51,11 @@ def make_tempfiles(dir, filenames)
 end
 
 # creating temp directories recursively
-# directories argument is used for recursion and is not supposed to be used by the client/user
+# directories argument is used for recursion
+# and is not supposed to be used by the client/user
 def with_tempdirs(filenames = {}, directories = [], &block)
-  if filenames.empty?
-    return block.call(directories)
-  end
+
+  return block.call(directories) if filenames.empty?
 
   with_tempdir(filenames.pop) do |dir|
     with_tempdirs(filenames, directories << dir, &block)
@@ -64,7 +64,8 @@ end
 
 # TODO: test this
 # creating temp directories recursively
-# directories argument is used for recursion and is not supposed to be used by the client/user
+# directories argument is used for recursion
+# and is not supposed to be used by the client/user
 def with_tempdirs_and_files(filenames = {}, directories = [], files = [] & block)
   block.call(directories, files) if filenames.empty?
 

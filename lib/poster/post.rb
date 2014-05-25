@@ -1,15 +1,15 @@
 module Poster
   class Post
-    # TODO add tags/categories
+    # TODO: add tags/categories
 
-    attr_reader :title, :author, :content, :created_at, :posted_at
+    attr_reader :title, :author, :content, :publish, :created_at, :posted_at
 
-    # TODO - to named key params
-    def initialize(title = 'Title could not be found', author = ENV['USERNAME'], content = 'lorem ipsum', created_at = Time.now, posted_at = Time.now)
+    # TODO: to named key params
+    def initialize(title = 'Title could not be found', author = ENV['USERNAME'], content = 'lorem ipsum', publish = true, created_at = Time.now, posted_at = Time.now)
       @title = title
       @author = author
       @content = content
-
+      @publish = publish
       @created_at = created_at
       @posted_at = posted_at
     end
@@ -21,8 +21,7 @@ module Poster
       h << "title: \"#{title.gsub(/&/, '&amp;')}\""
       h << "date: #{posted_at}"
       h << "author: #{author}"
-      # TODO - make 'published' configurable over CL
-      h << 'published: true'
+      h << "published: #{publish}"
       h << 'comments: true'
       h << 'categories: '
       h << '---'

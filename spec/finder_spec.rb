@@ -21,13 +21,13 @@ module Poster
         end
       end
 
-      it 'should find all .md and .markdown files' do
+      it 'should ignore files with similar extensions' do
         with_tempdir(other_extensions) do |dir|
           expect(Finder.find(dir: dir)).to be_empty
         end
       end
 
-      it 'should not find files with containing .md and .markdown but not as extensions' do
+      it 'should ignore files containing .md and .markdown but not as extensions' do
         with_tempdir(not_as_extension) do |dir|
           expect(Finder.find(dir: dir)).to be_empty
         end
@@ -42,9 +42,9 @@ module Poster
     end
 
     # TODO: make this optional
-    it 'should ignore files without a parseable dates in the name' do
+    it 'should ignore files without a parseable date in the name' do
       with_tempdir(no_dates) do |dir|
-        expect(Finder.find(dir: dir)).to eq []
+        expect(Finder.find(dir: dir)).to be_empty
       end
     end
 
