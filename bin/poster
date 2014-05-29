@@ -42,10 +42,10 @@ def get_command_line_options(options = {})
 
     opts.on('-v', '--verbose', 'more output') { options[:verbose] = true }
     opts.on('-i', '--interactive', 'interactive processing') { options[:interactive] = true }
-    opts.on('-l', '--list', 'List all known targets.') { print_known_targets }
-    opts.on('--config', 'List all configuration parameters.') { print_config }
+    opts.on('-l', '--list', 'List all known targets.') { print_known_targets; exit}
+    opts.on('--config', 'List all configuration parameters.') { print_config; exit }
 
-    opts.on_tail('-h', '--help', 'Show this message') { puts opts }
+    opts.on_tail('-h', '--help', 'Show this message') { puts opts;exit }
   end
 
   parser.parse!

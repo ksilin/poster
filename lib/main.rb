@@ -46,7 +46,7 @@ module Poster
       #}
       #end
 
-      results = extract(files: files)
+      results = extract(files, options[:verbose])
       print_summary(results: results)
 
       post(results, options)
@@ -69,10 +69,20 @@ module Poster
       end
     end
 
-    def self.extract(files:)
+    def self.extract(files, verbose = false)
       files.each_with_object({}) do |f, sum|
-        sum[f] = Parser.extract(f)
+        sum[f] = Parser.new(content(f), post_date(f, verbose)).extract
       end
+    end
+
+    def self.content(filename)
+      File.open(filename).read
+    end
+
+    def self.post_date(filename, verbose = false)
+      d = Date.parse(filename) rescue Date.today
+      $stderr.puts "extracted date: #{d} from #{filename}" if verbose
+      d
     end
 
     def self.find(dir:, recursive:, verbose:)
@@ -84,7 +94,7 @@ module Poster
       files.each { |f| $stderr.puts f }
     end
 
-    def print_explicit_file_list_warning(files)
+    def self.print_explicit_file_list_warning(files)
       string = "Would work on these files, but ignoring explicit file lists for now: #{files}"
       $stderr.puts string
     end

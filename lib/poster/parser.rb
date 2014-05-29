@@ -1,5 +1,5 @@
 module Poster
-  module Parser
+  class Parser
     # TODO: have to dynamically determine the top header level
     # the default top header level is h3 /'###'
     THREE_HASHES = /(?<!#)###(?!#)/
@@ -22,37 +22,44 @@ module Poster
     # turns out, we dont need that crap, since Date will do it for us
     DATE = /(\d){4}\D(\d){1,2}\D(\d){1,2}/
 
-    # TODO: extracting Post instances is not the job of a parser. move it up.
-    def self.extract(filename)
-      content = File.open(filename).read
-      as_posts(split(content), Date.parse(filename))
+    attr_reader :content, :date
+
+    def initialize(content, date = Date.today, verbose = false)
+      @content = content
+      @date = date
+      @verbose = verbose
     end
 
-    def self.split(content)
+    # TODO: extracting Post instances is not the job of a parser. move it up.
+    def extract
+      as_posts(split)
+    end
+
+    def split
       return [] if empty?(content) || contains_no_titles(content)
 
-      content = drop_everything_before_first_title(content)
-      content.split(THREE_HASHES).reject { |post| empty?(post) }
+      c = drop_everything_before_first_title
+      c.split(THREE_HASHES).reject { |post| empty?(post) }
     end
 
-    def self.contains_no_titles(content)
+    def contains_no_titles(content)
       content !~ THREE_HASHES
     end
 
-    def self.empty?(content)
+    def empty?(content)
       content.nil? || content.empty?
     end
 
-    def self.drop_everything_before_first_title(content)
+    def drop_everything_before_first_title
       content.slice(content.index(THREE_HASHES)..-1)
     end
 
-    def self.first_line(post)
-      return '' if empty?(post)
+    def first_line(post)
+      return '' if (post.nil? || post.empty?)
       post.split("\n")[0].strip
     end
 
-    def self.as_posts(posts, date)
+    def as_posts(posts)
       posts.reduce([]) do |result, p|
         result << Post.new(first_line(p), ENV['USERNAME'], p, date, Time.now)
       end
