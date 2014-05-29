@@ -61,7 +61,8 @@ module Poster
 
     def as_posts(posts)
       posts.reduce([]) do |result, p|
-        result << Post.new(first_line(p), ENV['USERNAME'], p, date, Time.now)
+        # TODO - true is for 'publish' - make optional
+        result << Post.new(first_line(p), ENV['USERNAME'], true, p, date, Time.now)
       end
     end
   end
