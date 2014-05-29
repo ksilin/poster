@@ -9,10 +9,9 @@ module Poster
       post = Post.new
       full_path = File.join(Planter.post_dir(:test), post.filename)
 
-      puts "looking for #{full_path}"
-      File.delete full_path
-      expect(File.exist?(full_path)).to be false
+      File.delete full_path if File.exist? full_path
 
+      puts "looking for #{full_path}"
       Planter.post(posts: [post], target: :test)
 
       expect(File.exist?(full_path)).to be true
