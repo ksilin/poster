@@ -2,23 +2,38 @@ require 'rspec'
 require 'open3'
 require 'yaml'
 
-describe 'simple' do
+shared_context 'FS setup' do
 
   let(:assets) { File.join(File.dirname(__FILE__), 'assets') }
   let(:executable) { File.join(File.dirname(__FILE__), '..', 'bin', 'poster') }
+end
+
+describe 'context - where are we?' do
+  include_context 'FS setup'
+
+  it 'working dir of this spec should be the poster directory, not spec' do
+    wd = Dir.pwd
+    puts "working dir: #{wd}"
+    expect(wd).to end_with 'poster'
+  end
+
+  it 'assets dir should contain md files' do
+    FileUtils.cd(assets) do
+      puts "found md files: #{Dir['*.md']}"
+      expect(Dir['*.md']).not_to be_empty
+    end
+  end
+
+
+end
+
+describe 'execution flags' do
+  include_context 'FS setup'
+
   let(:help) { executable + " -h #{assets}" }
   let(:list_settings) { executable + " -l #{assets}" }
 
-  it 'context' do
-    # for some reason, the working dir is not the spec dir:
-    puts "working dir: #{Dir.pwd}"
-    # => ~/Code/Ruby/workspaces/poster
-    puts "the assets are at: #{assets}"
-  end
-
-  it 'should start and run' do
-
-    # TODO: expect no files
+  it 'should start and run - a smoke test' do
 
     Open3.popen3(help) do |_stdin, stdout, stderr, wait_thr|
       pid = wait_thr.pid # pid of the started process.
@@ -36,9 +51,6 @@ describe 'simple' do
       # puts 'stdin: --------------------------'
       # puts stdin.read
     end
-
-    # TODO: expect files
-
   end
 
   it 'should render help output to stdout' do
